@@ -12,7 +12,8 @@
             <input name="address" type="text" placeholder="Address"/><br>
             <input name="organization" type="text" placeholder="Organization"/><br>
             <input name="position" type="text" placeholder="Position"/><br>
-            <input name="username" type="text" placeholder="Username"/><br>
+            <input name="username" type="text" placeholder="Username" value="">
+            <br>
             <input name="password" type="password" placeholder="Password"/><br>
             
             <select>
@@ -20,8 +21,8 @@
                 <option value="2">Teacher</option>
                 <option value="3">Student</option>
             </select><br>
-
-            <input name="register" type="submit" value="Register"><br>
+            <input name="register" type="submit" value="Register">
+            <br>
         </form>
         <a href="dashboard.html"><button>Cancel</button></a>
     </body>
