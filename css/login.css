@@ -41,3 +41,18 @@ div{
 hr{
     margin: 1px;
 }
+
+img{
+    width: 100%;
+}
+
+.h4header{
+    margin-bottom: 0px;
+}
+
+.dbMessage{
+    color: red;
+    font-size: 10pt;
+    margin: 0px;
+    display: none;
+}
