@@ -1,5 +1,5 @@
 <?php
-include ("mod_conn.php");
+require ("mod_conn.php");
 
 if(isset($_POST['btn_Login'])){
 

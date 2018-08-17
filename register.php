@@ -30,7 +30,7 @@
 
 <?php
 
-include ("php/mod_conn.php");
+require ("php/mod_conn.php");
 
 //error messages
 $username_exist = "Username already exist!";
