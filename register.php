@@ -32,6 +32,9 @@
 
 include ("php/mod_conn.php");
 
+//error messages
+$username_exist = "Username already exist!";
+
 if(isset($_POST['register'])){
     $fname = mysqli_real_escape_string($conn, $_POST['fname']);
     $mname = mysqli_real_escape_string($conn, $_POST['mname']);
@@ -45,6 +48,14 @@ if(isset($_POST['register'])){
     $acc_level = mysqli_real_escape_string($conn, $_POST['access_Level']);
 
     $enc_pass = password_hash($password,PASSWORD_BCRYPT);
+
+    //find the same username to students table
+    $find_query = mysqli_query($conn, "SELECT `student_username` FROM students WHERE `student_username` = '$username'") or die ("Search duplicate username to students table have failed and was aborted!");
+    $find_result = mysqli_fetch_assoc($find_query);
+
+    if($find_result > 0){
+        die($username_exist);
+    }
 
     $query = mysqli_query($conn,
 "INSERT INTO `staffs`
@@ -73,9 +84,7 @@ VALUES
     \"$enc_pass\",
     \"$acc_level\"
 )
-") or die("Registration failed...");
-
-    unset($_POST);
+") or die($username_exist);
 }
 
 ?>
