@@ -2,14 +2,24 @@
     <!--Login Module UI WIP-->
     <header>
         <title>Script Forte - Staff Login</title>
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
+        <link href="css/login.css" rel="stylesheet" type="text/css"/>
     </header>
 
     <body>
-        <form method="POST" action="php/mod_login.php">
-            <input name="username" type="text">
-            <input name="password" type="password"><br>
-            <input name="btn_Login" type="submit" value="Login">
-        </form> 
+        <div>
+            <center>
+                <br>
+                <form method="POST" action="php/mod_login.php">
+                    <input required placeholder = "Username" name="username" type="text"><br>
+                    <input required placeholder = "Password" name="password" type="password"><br>
+                    <hr>
+                    <input name="btn_Login" type="submit" value="Login">
+                </form>
+            </center> 
+        </div>
+        
     </body>
     
     <footer></footer>
