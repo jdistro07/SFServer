@@ -27,7 +27,10 @@ if(isset($_GET['search'])){
     
     ) or die("No Results...");
 
-    echo "<table>";
+    echo "<table class=\"table table-striped table-bordered table-sm\">";
+    echo "<th>Class ID</th>";
+    echo "<th>Staff Name</th>";
+    echo "<th>Class Grade & Section</th>";
     while($assoc_row = mysqli_fetch_assoc($result)){
         echo "<tr>";
         echo "
@@ -41,7 +44,4 @@ if(isset($_GET['search'])){
     }
     echo "</table>";
 }
-
-
-
 ?>
