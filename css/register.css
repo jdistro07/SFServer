@@ -1,0 +1,66 @@
+input{
+    margin-top: 10px;
+    padding: 15px;
+}
+
+div{
+    background-color: white;
+    margin: 0 auto;
+
+    box-shadow: 1px 1px 10px 5px #888888;
+}
+
+button:hover, input[type=submit]{
+    cursor: hand;
+}
+
+input[type=password], input[type=text], .datePicker, select{
+    margin-top: 3px;
+    margin-bottom: 3px;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    text-align: center;
+    width: 80%;
+}
+
+select{
+    border-radius: 3px;
+    border: 1px solid;
+    text-align: center;
+}
+
+input[type=submit]{
+    margin-top: 5px;
+
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 3px;
+
+    color: white;
+    background-color: #2ecc71;
+
+    width: 80%;
+    height: 60px;
+}
+
+button{
+    margin-top: 5px;
+
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 3px;
+
+    color: white;
+    background-color: #e74c3c;
+
+    width: 80%;
+    height: 60px;
+}
+
+form{
+    margin-bottom: 3px;
+}

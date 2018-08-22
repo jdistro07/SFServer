@@ -2,7 +2,7 @@ body{
     background-image: url("../images/bg.jpg");
 }
 
-input[type = text], input[type=password]{
+input[type = text], input[type=password], .datePicker{
     border-radius: 3px;
     border: 1px solid;
 }

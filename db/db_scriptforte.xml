@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 4.8.0.1
+- https://www.phpmyadmin.net
+-
+- Host: 127.0.0.1
+- Generation Time: Aug 20, 2018 at 01:14 PM
+- Server version: 10.1.32-MariaDB
+- PHP Version: 5.6.36
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="db_scriptforte" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="class">
+                CREATE TABLE `class` (
+                  `class_ID` int(11) NOT NULL AUTO_INCREMENT,
+                  `class_staff` int(11) NOT NULL,
+                  `class_grade` int(2) NOT NULL,
+                  `class_section` char(3) NOT NULL COMMENT 'Class section per grade',
+                  PRIMARY KEY (`class_ID`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Collection of classes of the school';
+            </pma:table>
+            <pma:table name="course">
+                CREATE TABLE `course` (
+                  `course_id` int(11) NOT NULL COMMENT 'ID of the course',
+                  `course_staffAuthorID` int(11) NOT NULL COMMENT 'ID of the author from staffs table only',
+                  `course_name` char(100) NOT NULL COMMENT 'Name of the course',
+                  `course_type` char(20) NOT NULL COMMENT 'Type of course (quiz, pre-test, post-test)',
+                  `course_file` blob NOT NULL COMMENT 'Contains the text file of the course.',
+                  PRIMARY KEY (`course_id`),
+                  UNIQUE KEY `course_name` (`course_name`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Collection of courses with author and types.';
+            </pma:table>
+            <pma:table name="staffs">
+                CREATE TABLE `staffs` (
+                  `staff_ID` int(11) NOT NULL AUTO_INCREMENT,
+                  `staff_fname` varchar(50) NOT NULL,
+                  `staff_mname` varchar(20) NOT NULL,
+                  `staff_lname` varchar(80) NOT NULL,
+                  `staff_birthdate` date NOT NULL,
+                  `staff_address` varchar(150) NOT NULL,
+                  `staff_organization` varchar(150) NOT NULL,
+                  `staff_position` varchar(30) NOT NULL,
+                  `staff_username` varchar(30) NOT NULL COMMENT 'Unique user names',
+                  `staff_password` char(60) NOT NULL,
+                  `staff_accountLevel` int(1) NOT NULL,
+                  PRIMARY KEY (`staff_ID`),
+                  UNIQUE KEY `staff_username` (`staff_username`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
+            </pma:table>
+            <pma:table name="students">
+                CREATE TABLE `students` (
+                  `student_ID` int(11) NOT NULL,
+                  `student_fname` varchar(50) NOT NULL,
+                  `student_mname` varchar(20) NOT NULL,
+                  `student_lname` varchar(80) NOT NULL,
+                  `student_birthdate` date NOT NULL,
+                  `student_address` varchar(150) NOT NULL,
+                  `student_classID` int(11) NOT NULL,
+                  `student_username` varchar(30) NOT NULL,
+                  `student_password` char(60) NOT NULL,
+                  `student_accountLevel` int(1) NOT NULL,
+                  PRIMARY KEY (`student_ID`),
+                  UNIQUE KEY `student_username` (`student_username`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Registered students';
+            </pma:table>
+            <pma:table name="student_performance">
+                CREATE TABLE `student_performance` (
+                  `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Performance entry ID',
+                  `pf_studentID` int(11) NOT NULL COMMENT 'ID of the student',
+                  `pf_courseID` int(11) NOT NULL COMMENT 'ID of the course.',
+                  `pf_rating` int(3) NOT NULL COMMENT 'Student rating to the course.',
+                  PRIMARY KEY (`pf_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Student performance after playing a course.';
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+</pma_xml_export>
