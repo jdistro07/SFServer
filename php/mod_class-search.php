@@ -1,6 +1,6 @@
 <?php
 
-require '../../php/mod_conn.php';
+require 'mod_conn.php';
 
 if(isset($_GET['search'])){
     $searchKey = $_GET['search'];
@@ -23,14 +23,22 @@ if(isset($_GET['search'])){
     staffs.staff_fname LIKE '%$searchKey%'
     OR
     class_grade LIKE '%$searchKey%'
+
+    ORDER BY staffs.staff_lname ASC
     "
     
     ) or die("No Results...");
 
-    echo "<table class=\"table table-striped table-bordered table-sm\">";
+    echo "<table class=\"table table-hover table-bordered table-sm\">";
+    echo "<thead class = \"thead-dark\">";
+    echo "<tr>";
     echo "<th>Class ID</th>";
     echo "<th>Staff Name</th>";
     echo "<th>Class Grade & Section</th>";
+    echo "<tr>";
+    echo "</thead>";
+
+    echo "<tbody>";
     while($assoc_row = mysqli_fetch_assoc($result)){
         echo "<tr>";
         echo "
@@ -42,6 +50,7 @@ if(isset($_GET['search'])){
         ";
         echo "</tr>";
     }
+    echo "</tbody>";
     echo "</table>";
 }
 ?>
