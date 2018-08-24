@@ -4,6 +4,8 @@
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
+        <link href="css/register-student.css" rel="stylesheet" type="text/css"/>
+        <script src="js/jquery.js"></script>
     </header>
 
     <body class="container-fluid fill-height">
@@ -17,23 +19,32 @@
                     <input required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
-                    <input required = "required" name="position" type="text" placeholder="Position"/><br>
-                    <input required = "required" name="organization" type="text" placeholder="Organization"/><br>
+                    <input required = "required" id = "class-search" name = "classID" list = "result-class" placeholder="Class"/>
+                    <datalist id="result-class">
+                    </datalist>
+                    <br>
+
                     <input required = "required" name="username" type="text" placeholder="Username" value=""><br>
                     <input required = "required" name="password" type="password" placeholder="Password"/><br>
-                    
-                    <select name = "access_Level">
-                        <option value="1">Administrator</option>
-                        <option value="2">Teacher</option>
-                    </select><br>
-                    
-                    <input name="register" type="submit" value="Register"><br>
 
+                    <input name="register" type="submit" value="Register"><br>
                 </form>
                 <a href="dashboard.html"><button>Cancel</button></a>
             </center>
         </div>
     </body>
+
+    <script>
+    $(document).ready(function(){
+        $('#class-search').keyup(function(){
+            var searchtext = $('#class-search').val();
+
+            $.get('php/minimod_class-search.php',{search:searchtext}, function(response){
+                $('#result-class').html(response);
+            });
+        });
+    })
+</script>
 </html>
 
 <?php
@@ -49,16 +60,15 @@ if(isset($_POST['register'])){
     $lname = mysqli_real_escape_string($conn, $_POST['lname']);
     $bdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
-    $organization = mysqli_real_escape_string($conn, $_POST['organization']);
-    $position = mysqli_real_escape_string($conn, $_POST['position']);
+    $classID = mysqli_real_escape_string($conn, $_POST['classID']);
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $acc_level = mysqli_real_escape_string($conn, $_POST['access_Level']);
+    $acc_level = 1;
 
-    $enc_pass = password_hash($password,PASSWORD_BCRYPT);
+    $enc_pass = password_hash($password,PASSWORD_BCRYPT); // encrypt password
 
     //find the same username to students table
-    $find_query = mysqli_query($conn, "SELECT `student_username` FROM students WHERE `student_username` = '$username'") or die ("Search duplicate username to students table have failed and was aborted!");
+    $find_query = mysqli_query($conn, "SELECT `staff_username` FROM staffs WHERE `staff_username` = '$username'") or die ("Search duplicate username to students table have failed and was aborted!");
     $find_result = mysqli_fetch_assoc($find_query);
 
     if($find_result > 0){
@@ -66,18 +76,17 @@ if(isset($_POST['register'])){
     }
 
     $query = mysqli_query($conn,
-"INSERT INTO `staffs`
+"INSERT INTO `students`
 (
-    `staff_fname`, 
-    `staff_mname`, 
-    `staff_lname`, 
-    `staff_birthdate`, 
-    `staff_address`, 
-    `staff_organization`, 
-    `staff_position`, 
-    `staff_username`, 
-    `staff_password`, 
-    `staff_accountLevel`
+    `student_fname`, 
+    `student_mname`, 
+    `student_lname`, 
+    `student_birthdate`, 
+    `student_address`, 
+    `student_classID`,  
+    `student_username`, 
+    `student_password`, 
+    `student_accountLevel`
 ) 
 VALUES 
 (
@@ -86,8 +95,7 @@ VALUES
     \"$lname\",
     \"$bdate\",
     \"$address\",
-    \"$organization\",
-    \"$position\",
+    \"$classID\",
     \"$username\",
     \"$enc_pass\",
     \"$acc_level\"
