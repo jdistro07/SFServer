@@ -14,7 +14,7 @@ button:hover, input[type=submit]{
     cursor: hand;
 }
 
-input[type=password], input[type=text], .datePicker, select{
+input[type=password], input[type=text], .datePicker, datalist{
     margin-top: 3px;
     margin-bottom: 3px;
 

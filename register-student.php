@@ -4,7 +4,6 @@
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
-        <link href="css/register-student.css" rel="stylesheet" type="text/css"/>
         <script src="js/jquery.js"></script>
     </header>
 
@@ -19,7 +18,7 @@
                     <input required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
-                    <input required = "required" id = "class-search" name = "classID" list = "result-class" placeholder="Class"/>
+                    <input style = "text-align: center;width:80%; margin: 0px; margin-top: 3px; margin-bottom: 3px; border-radius: 3px; border: 1px solid;" required = "required" id = "class_search" name = "classID" list = "result-class" placeholder="Class"/>
                     <datalist id="result-class">
                     </datalist>
                     <br>
@@ -36,8 +35,8 @@
 
     <script>
     $(document).ready(function(){
-        $('#class-search').keyup(function(){
-            var searchtext = $('#class-search').val();
+        $('#class_search').keyup(function(){
+            var searchtext = $('#class_search').val();
 
             $.get('php/minimod_class-search.php',{search:searchtext}, function(response){
                 $('#result-class').html(response);
