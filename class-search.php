@@ -13,11 +13,12 @@
     <center>
         <div class="col-lg-6 col-lg-offset-3" id="container">
             <div class = "form-group">
-                <input class="form-control" id="txt_searchbox" type = "text" placeholder="Class Name" name="txt_search" autofocus>
-                <input class="form-control" id="txt_search" type = "button" value="Search Class" name="btn_search" autofocus>
+                <input class="form-control" id="txt_searchbox" type = "text" placeholder="Instructor/Class Name" name="txt_search" autofocus>
+                <input class="form-control" id="txt_search" type = "button" value="Search" name="btn_search" autofocus>
             </div>
 
             <div>
+                
                 <table class = "table table-hover table-bordered table-sm">
                     <thead class = "thead-dark">
                         <tr>
@@ -27,7 +28,7 @@
                         </tr>
                     </thead>
 
-                    <tbody id = "search-results"></tbody>
+                    <tbody id = "search-results"><?php require 'php/mod_class-search.php'; ?></tbody>
                 </table>
             </div>
         </div>
