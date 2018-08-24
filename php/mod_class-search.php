@@ -29,16 +29,6 @@ if(isset($_GET['search'])){
     
     ) or die("No Results...");
 
-    echo "<table class=\"table table-hover table-bordered table-sm\">";
-    echo "<thead class = \"thead-dark\">";
-    echo "<tr>";
-    echo "<th>Class ID</th>";
-    echo "<th>Staff Name</th>";
-    echo "<th>Class Grade & Section</th>";
-    echo "<tr>";
-    echo "</thead>";
-
-    echo "<tbody>";
     while($assoc_row = mysqli_fetch_assoc($result)){
         echo "<tr>";
         echo "
@@ -50,7 +40,5 @@ if(isset($_GET['search'])){
         ";
         echo "</tr>";
     }
-    echo "</tbody>";
-    echo "</table>";
 }
 ?>

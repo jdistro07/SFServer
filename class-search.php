@@ -17,7 +17,19 @@
                 <input class="form-control" id="txt_search" type = "button" value="Search Class" name="btn_search" autofocus>
             </div>
 
-            <div id = "search-results"></div>
+            <div>
+                <table class = "table table-hover table-bordered table-sm">
+                    <thead class = "thead-dark">
+                        <tr>
+                            <th>Class ID</th>
+                            <th>Staff Name</th>
+                            <th>Class Grade & Section</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id = "search-results"></tbody>
+                </table>
+            </div>
         </div>
     </center>
 </body>
