@@ -62,7 +62,7 @@ if(isset($_POST['register'])){
     $classID = mysqli_real_escape_string($conn, $_POST['classID']);
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $acc_level = 1;
+    $acc_level = 3;
 
     $enc_pass = password_hash($password,PASSWORD_BCRYPT); // encrypt password
 
