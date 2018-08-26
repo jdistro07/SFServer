@@ -10,7 +10,7 @@
     <body class="container-fluid fill-height">
         <div class="col-lg-6 col-lg-offset-3">
             <center>
-                <h1>Staff Registration</h1>
+                <h1>Student Registration</h1>
                 <br>
                 <form method = "post">
                     <input required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
