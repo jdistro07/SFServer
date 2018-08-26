@@ -16,9 +16,7 @@ require ("../php/mod_conn.php");
 
     //verify if staff or student
     if($result > 0){
-        echo $result['staff_username'];
         $hashed_pass = $result["staff_password"];
-        echo "Query Result: Staff account<br>";
     }else if($result < 0){ 
         // If no result from staff, search the students table
         $query_students = mysqli_query($conn, 
@@ -31,12 +29,12 @@ require ("../php/mod_conn.php");
 
         $result_student = mysqli_fetch_assoc($query_students);
         $hashed_pass = $result_student["student_password"];
-
-        echo "Query Result: Student account<br>";
     }else{
         echo("No query result");
     }
     
+
+    //verify password
     if(password_verify($password,$hashed_pass)){
         echo "Login granted!";
     }else{
