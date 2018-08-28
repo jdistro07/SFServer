@@ -1,6 +1,6 @@
 <html>
     <header>
-        <title>Account Registration</title>
+        <title>Class Registration</title>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
@@ -13,6 +13,7 @@
                 <br>
                 <form method = "post">
                     <input required = "required" name="classStaff" type="text" placeholder="Class Staff" autofocus/><br>
+                    <datalist></datalist>
                     <input required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
                     <input required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
 

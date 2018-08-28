@@ -1,6 +1,6 @@
 <html>
     <header>
-        <title>Account Registration</title>
+        <title>Staff Account Registration</title>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>

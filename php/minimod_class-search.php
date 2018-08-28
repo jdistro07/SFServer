@@ -36,7 +36,10 @@ if(isset($_GET['search'])){
         
         Grade ".$assoc_row['class_grade']." (".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname'].")
         
-        <option>";
+        <option>
+        
+        <br>
+        ";
     }
 }
 ?>
