@@ -18,18 +18,20 @@
             </div>
 
             <div>
-                
-                <table class = "table table-hover table-bordered table-sm">
-                    <thead class = "thead-dark">
-                        <tr>
-                            <th>Staff ID</th>
-                            <th>Staff Name</th>
-                            <th>Menu</th>
-                        </tr>
-                    </thead>
+                <form action = "../php/mod_staff-delete.php" method = "post">
+                    <input style = "margin-bottom: 5px; margin-top: -5px; width: 105px; height: 60px; white-space: normal" class = "btn btn-danger" type = "submit" name = "btn-delete" value = "Delete Record/s">
+                    <table class = "table table-hover table-bordered table-sm">
+                        <thead class = "thead-dark">
+                            <tr>
+                                <th>Staff ID</th>
+                                <th>Staff Name</th>
+                                <th>Menu</th>
+                            </tr>
+                        </thead>
 
-                    <tbody id = "search-results"><?php require 'php/mod_staff-search.php'; ?></tbody>
-                </table>
+                        <tbody id = "search-results"><?php require 'php/mod_staff-search.php'; ?></tbody>
+                    </table>
+                <form>
             </div>
         </div>
     </center>
