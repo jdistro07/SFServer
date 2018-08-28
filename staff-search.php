@@ -13,7 +13,7 @@
     <center>
         <div class="col-lg-6 col-lg-offset-3" id="container">
             <div class = "form-group">
-                <input class="form-control" id="txt_searchbox" type = "text" placeholder="Instructor/Class Name" name="txt_search" autofocus>
+                <input class="form-control" id="txt_searchbox" type = "text" placeholder="Staff Name" name="txt_search" autofocus>
                 <input class="form-control" id="txt_search" type = "button" value="Search" name="btn_search" autofocus>
             </div>
 
