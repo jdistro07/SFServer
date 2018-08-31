@@ -6,6 +6,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
     <link href="css/class-search.css" rel="stylesheet" type="text/css"/>
+    <script src = "js/jquery.js"></script>
 
     <script type="text/javascript" src="js/jquery.js"></script>
 </head>
@@ -19,7 +20,7 @@
 
             <div>
                 <form action = "../php/mod_staff-delete.php" method = "post">
-                    <input style = "margin-bottom: 5px; margin-top: -5px; width: 105px; height: 60px; white-space: normal" class = "btn btn-danger" type = "submit" name = "btn-delete" value = "Delete Record/s">
+                    <input onclick = "return confirm('Deletion of the selected data is permanent acnd cannot be retrieved. Confirm deleting the selected records?')" id = "button" style = "margin-bottom: 5px; margin-top: -5px; width: 105px; height: 60px; white-space: normal" class = "btn btn-normal" type = "submit" name = "btn-delete" value = "Delete Record/s">
                     <table class = "table table-hover table-bordered table-sm">
                         <thead class = "thead-dark">
                             <tr>
