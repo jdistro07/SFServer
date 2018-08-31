@@ -22,9 +22,9 @@
                 <table class = "table table-hover table-bordered table-sm">
                     <thead class = "thead-dark">
                         <tr>
-                            <th>Class ID</th>
-                            <th>Staff Name</th>
-                            <th>Class Grade & Section</th>
+                            <th style = "vertical-align: middle; text-align: center">Class ID</th>
+                            <th style = "vertical-align: middle; text-align: center">Staff Name</th>
+                            <th style = "vertical-align: middle; text-align: center">Class Grade & Section</th>
                         </tr>
                     </thead>
 

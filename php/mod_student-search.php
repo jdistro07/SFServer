@@ -3,7 +3,7 @@
 require 'mod_conn.php';
 
 if(isset($_GET['search'])){
-    $searchKey = $_GET['search'];
+    $searchKey = mysqli_real_escape_string($conn, $_GET['search']);
 
     $result = mysqli_query($conn, 
     

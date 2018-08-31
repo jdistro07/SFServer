@@ -24,9 +24,9 @@
                     <table class = "table table-hover table-bordered table-sm">
                         <thead class = "thead-dark">
                             <tr>
-                                <th>Staff ID</th>
-                                <th>Staff Name</th>
-                                <th>Menu</th>
+                                <th style = "vertical-align: middle; text-align: center">Student ID</th>
+                                <th style = "vertical-align: middle; text-align: center">Student Name</th>
+                                <th style = "vertical-align: middle; text-align: center">Menu</th>
                             </tr>
                         </thead>
 
