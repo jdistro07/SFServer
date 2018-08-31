@@ -9,14 +9,14 @@ if(isset($_GET['search'])){
     
     "SELECT *
     
-    FROM staffs
+    FROM students
     
     WHERE 
-    staffs.staff_lname LIKE '%$searchKey%'
+    students.student_lname LIKE '%$searchKey%'
     OR
-    staffs.staffs_fname LIKE '%$searchKey%'
+    students.student_fname LIKE '%$searchKey%'
 
-    ORDER BY staff.staff_lname ASC
+    ORDER BY students.student_lname ASC
     "
     
     ) or die("No Results...");
@@ -26,10 +26,10 @@ if(isset($_GET['search'])){
         echo "
             
         <td style = \"vertical-align: middle; text-align: center\">
-            <input type = \"checkbox\" name = \"deleteMark[]\" value = ".$assoc_row['staff_ID'].">".$assoc_row['staff_ID']."
+            <input type = \"checkbox\" name = \"deleteMark[]\" value = ".$assoc_row['student_ID'].">".$assoc_row['student_ID']."
         </td>
         
-        <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
+        <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
             <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
@@ -42,8 +42,8 @@ if(isset($_GET['search'])){
     $result = mysqli_query($conn, 
     
     "SELECT *
-    FROM staffs
-    ORDER BY staffs.staff_lname ASC
+    FROM students
+    ORDER BY students.student_lname ASC
     "
     
     ) or die("No Results...");
@@ -53,10 +53,10 @@ if(isset($_GET['search'])){
         echo "
             
         <td style = \"vertical-align: middle; text-align: center\">
-            <input type = \"checkbox\" name = \"deleteMark[]\" value = ".$assoc_row['staff_ID'].">".$assoc_row['staff_ID']."
+            <input type = \"checkbox\" name = \"deleteMark[]\" value = ".$assoc_row['student_ID'].">".$assoc_row['student_ID']."
         </td>
         
-        <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
+        <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
             <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
