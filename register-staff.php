@@ -1,3 +1,10 @@
+<?php 
+
+//initialize modules on start
+require 'php/auth-mods/auth-login.php';
+
+?>
+
 <html>
     <header>
         <title>Staff Account Registration</title>
@@ -7,12 +14,12 @@
     </header>
 
     <body class="container-fluid fill-height">
-        <div class="col-lg-6 col-lg-offset-3">
+        <div id = "divContainer" class="col-lg-6 col-lg-offset-3">
             <center>
                 <h1>Staff Registration</h1>
                 <br>
                 <form method = "post">
-                    <input required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
+                    <input id = "fname" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>    
                     <input name="mname" type="text" placeholder="Middle Name"/><br>
                     <input required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
@@ -22,7 +29,7 @@
                     <input required = "required" name="username" type="text" placeholder="Username" value=""><br>
                     <input required = "required" name="password" type="password" placeholder="Password"/><br>
                     
-                    <select name = "access_Level">
+                    <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
                         <option value="1">Administrator</option>
                         <option value="2">Teacher</option>
                     </select><br>
@@ -30,7 +37,7 @@
                     <input name="register" type="submit" value="Register"><br>
 
                 </form>
-                <a href="dashboard.html"><button>Cancel</button></a>
+                <a href="dashboard.php"><button>Cancel</button></a>
             </center>
         </div>
     </body>

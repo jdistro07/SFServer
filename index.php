@@ -1,3 +1,18 @@
+<?php
+
+//if there is a valid user ID on session variables, redirect the user back to the dashboard
+
+session_start();
+
+if(isset($_SESSION["user_ID"]) && !empty($_SESSION["user_ID"])){
+
+    // force redirect back to dashboard because the user is still considered logged in
+    header('location: dashboard.php');
+
+}
+
+?>
+
 <html>
     <!--Login Module UI WIP-->
     <header>

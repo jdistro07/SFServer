@@ -2,12 +2,24 @@
 
 //initialize modules on start
 require 'php/auth-mods/auth-login.php';
+require ("php/mod_conn.php");
+
+$class_id = $_GET['id'];
+
+//query corresponding entry by class ID
+$class_entry = mysqli_query($conn,
+
+"SELECT * FROM class WHERE class_ID = '$class_id'"
+
+) or die(mysqli_error($conn));
+
+$class_query_result = mysqli_fetch_assoc($class_entry);
 
 ?>
 
 <html>
     <header>
-        <title>Class Registration</title>
+        <title>Class Update Information</title>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
@@ -20,14 +32,14 @@ require 'php/auth-mods/auth-login.php';
                 <h1>Class Registration</h1>
                 <br>
                 <form method = "post">
-                    <input id = "staff" required = "required" name="classStaff" type="text" placeholder="Class Staff" list = "result-staffs" autofocus/><br>
+                    <input value = "<?php echo $class_query_result['class_staff']; ?>"  id = "staff" required = "required" name="classStaff" type="text" placeholder="Class Staff" list = "result-staffs" autofocus/><br>
                     <datalist id="result-staffs"></datalist>
-                    <input required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
-                    <input required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
+                    <input value = "<?php echo $class_query_result['class_grade']; ?>" required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
+                    <input value = "<?php echo $class_query_result['class_section']; ?>" required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
 
-                    <input onclick = "return confirm('Approve registration?')" name="register" type="submit" value="Register Class"><br>
+                    <input onclick = "return confirm('Confirm updating the selected class?')" name="register" type="submit" value="Update Class Information"><br>
                 </form>
-                <a href="dashboard.php"><button>Cancel</button></a>
+                <a href="class-search.php"><button>Cancel</button></a>
             </center>
         </div>
     </body>
@@ -47,28 +59,27 @@ require 'php/auth-mods/auth-login.php';
 
 <?php
 
-require ("php/mod_conn.php");
-
 if(isset($_POST['register'])){
+
     $staff = mysqli_real_escape_string($conn, $_POST['classStaff']);
     $grade = mysqli_real_escape_string($conn, $_POST['classGrade']);
     $section = mysqli_real_escape_string($conn, $_POST['classSection']);
     
     $query = mysqli_query($conn,
-"INSERT INTO `class`
-(
-    `class_staff`, 
- 	`class_grade`, 
- 	`class_section`
-) 
- 
-VALUES 
-(
- 	'".$staff."',
- 	'".$grade."',
-	'".$section."'
-)
-") or die("Query Error!");
+    "UPDATE `class` 
+    SET 
+
+    `class_staff`='$staff',
+    `class_grade`='$grade',
+    `class_section`='$section' 
+
+    WHERE class_ID = $class_id
+
+    ") or die(mysqli_error($conn));
+
+    header("location: class-search.php");
+
 }
+
 
 ?>

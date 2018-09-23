@@ -15,7 +15,7 @@ if(isset($_GET['search'])){
     class_grade, 
     class.class_section 
     
-    FROM class INNER JOIN staffs ON class.class_staff = staffs.staff_ID 
+    FROM class LEFT OUTER JOIN staffs ON class.class_staff = staffs.staff_ID 
     
     WHERE 
     staffs.staff_lname LIKE '%$searchKey%'

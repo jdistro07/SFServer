@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Host: 127.0.0.1
-- Generation Time: Aug 26, 2018 at 02:26 PM
+- Generation Time: Sep 06, 2018 at 12:54 PM
 - Server version: 10.1.32-MariaDB
 - PHP Version: 5.6.36
 -->
@@ -25,16 +25,23 @@
                   PRIMARY KEY (`class_ID`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COMMENT='Collection of classes of the school';
             </pma:table>
-            <pma:table name="course">
-                CREATE TABLE `course` (
-                  `course_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of the course',
-                  `course_staffAuthorID` int(11) NOT NULL COMMENT 'ID of the author from staffs table only',
-                  `course_name` char(100) NOT NULL COMMENT 'Name of the course',
-                  `course_type` char(20) NOT NULL COMMENT 'Type of course (quiz, pre-test, post-test)',
-                  `course_file` blob NOT NULL COMMENT 'Contains the text file of the course.',
-                  PRIMARY KEY (`course_id`),
-                  UNIQUE KEY `course_name` (`course_name`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Collection of courses with author and types.';
+            <pma:table name="performance_data">
+                CREATE TABLE `performance_data` (
+                  `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Student performance entry ID',
+                  `pf_userID` int(11) NOT NULL COMMENT 'ID of the student',
+                  `pf_username` varchar(30) NOT NULL COMMENT 'Username of the test taker',
+                  `pf_testID` int(11) NOT NULL COMMENT 'ID of the course.',
+                  `pf_rating` int(3) NOT NULL COMMENT 'Student rating to the course.',
+                  PRIMARY KEY (`pf_id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='Performance data of each users that finishes the game.';
+            </pma:table>
+            <pma:table name="questions">
+                CREATE TABLE `questions` (
+                  `question_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of each question',
+                  `question_testID` int(11) NOT NULL COMMENT 'ID of the test where the question/s belong to',
+                  `question_formattedQuestion` varchar(255) NOT NULL COMMENT 'Formatted question text for the client',
+                  PRIMARY KEY (`question_id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COMMENT='Entry of questions for reference table tests';
             </pma:table>
             <pma:table name="staffs">
                 CREATE TABLE `staffs` (
@@ -51,7 +58,7 @@
                   `staff_accountLevel` int(1) NOT NULL,
                   PRIMARY KEY (`staff_ID`),
                   UNIQUE KEY `staff_username` (`staff_username`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
+                ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
             </pma:table>
             <pma:table name="students">
                 CREATE TABLE `students` (
@@ -67,16 +74,16 @@
                   `student_accountLevel` int(1) NOT NULL,
                   PRIMARY KEY (`student_ID`),
                   UNIQUE KEY `student_username` (`student_username`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COMMENT='Registered students';
+                ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COMMENT='Registered students';
             </pma:table>
-            <pma:table name="student_performance">
-                CREATE TABLE `student_performance` (
-                  `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Student performance entry ID',
-                  `pf_studentID` int(11) NOT NULL COMMENT 'ID of the student',
-                  `pf_courseID` int(11) NOT NULL COMMENT 'ID of the course.',
-                  `pf_rating` int(3) NOT NULL COMMENT 'Student rating to the course.',
-                  PRIMARY KEY (`pf_id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Student performance after playing a course.';
+            <pma:table name="tests">
+                CREATE TABLE `tests` (
+                  `test_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Test entry ID',
+                  `test_staffAuthor` int(11) NOT NULL COMMENT 'Author of the Test',
+                  `test_name` char(64) NOT NULL COMMENT 'Name of the test',
+                  `test_type` char(20) NOT NULL COMMENT 'Type of test (Post-test, Pre-test)',
+                  PRIMARY KEY (`test_ID`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='Entry of pre-tests and post-tests';
             </pma:table>
         </pma:database>
     </pma:structure_schemas>

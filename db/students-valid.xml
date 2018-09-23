@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 4.8.0.1
+- https://www.phpmyadmin.net
+-
+- Host: 127.0.0.1
+- Generation Time: Sep 07, 2018 at 05:30 PM
+- Server version: 10.1.32-MariaDB
+- PHP Version: 5.6.36
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="db_scriptforte" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="students">
+                CREATE TABLE `students` (
+                  `student_ID` int(11) NOT NULL AUTO_INCREMENT,
+                  `student_fname` varchar(50) NOT NULL,
+                  `student_mname` varchar(20) NOT NULL,
+                  `student_lname` varchar(80) NOT NULL,
+                  `student_birthdate` date NOT NULL,
+                  `student_address` varchar(150) NOT NULL,
+                  `student_classID` int(11) NOT NULL,
+                  `student_username` varchar(30) NOT NULL,
+                  `student_password` char(60) NOT NULL,
+                  `student_accountLevel` int(1) NOT NULL,
+                  PRIMARY KEY (`student_ID`),
+                  UNIQUE KEY `student_username` (`student_username`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COMMENT='Registered students';
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Database: 'db_scriptforte'
+    -->
+    <database name="db_scriptforte">
+        <!-- Table students -->
+        <table name="students">
+            <column name="student_ID">1</column>
+            <column name="student_fname">Johndel</column>
+            <column name="student_mname">B.</column>
+            <column name="student_lname">Villanueva</column>
+            <column name="student_birthdate">1212-12-12</column>
+            <column name="student_address">Inter Galactic Universe</column>
+            <column name="student_classID">3</column>
+            <column name="student_username">studentskild</column>
+            <column name="student_password">$2y$10$Q6dUkoYpP9ko49noQ3o0se4AYORYq8wnqpNUN6crdQLTrZ1jH/BI.</column>
+            <column name="student_accountLevel">3</column>
+        </table>
+        <table name="students">
+            <column name="student_ID">10</column>
+            <column name="student_fname">Kyle</column>
+            <column name="student_mname"></column>
+            <column name="student_lname">Delos Reyes</column>
+            <column name="student_birthdate">1998-10-18</column>
+            <column name="student_address">6-13 Leo Corner, Virgo St., Capitol Hills, Bacolod City</column>
+            <column name="student_classID">2</column>
+            <column name="student_username">silverstrider</column>
+            <column name="student_password">$2y$10$K/4uUIPcsoD0yqrV0xFpBuFIYa2JM4bGbeZ5oOV66R6jYSJN3j2xG</column>
+            <column name="student_accountLevel">3</column>
+        </table>
+    </database>
+</pma_xml_export>

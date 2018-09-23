@@ -2,6 +2,8 @@
 
 require 'mod_conn.php';
 
+$requestType = "staffupdate";
+
 if(isset($_GET['search'])){
     $searchKey = mysqli_real_escape_string($conn, $_GET['search']);
 
@@ -14,9 +16,9 @@ if(isset($_GET['search'])){
     WHERE 
     staffs.staff_lname LIKE '%$searchKey%'
     OR
-    staffs.staffs_fname LIKE '%$searchKey%'
+    staffs.staff_fname LIKE '%$searchKey%'
 
-    ORDER BY staff.staff_lname ASC
+    ORDER BY staffs.staff_lname ASC
     "
     
     ) or die("No Results...");
@@ -32,8 +34,8 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
-            <a href = \"user-update.php\"><button class = \"btn btn-primary\">Update<br/> Information</button></a>
+            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."\">Profile</a>
+            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."&request=".$requestType."\">Update</a>
         </td>
         ";
         echo "</tr>";
@@ -59,8 +61,8 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
-            <a href = \"user-update.php\"><button class = \"btn btn-primary\">Update<br/> Information</button></a>
+            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."\">Profile</a>
+            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."&request=".$requestType."\">Update</a>
         </td>
         ";
         echo "</tr>";

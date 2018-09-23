@@ -32,8 +32,8 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
-            <a href = \"user-update.php\"><button class = \"btn btn-primary\">Update<br/> Information</button></a>
+            <a href = \"user-profile.php\">Profile</a>
+            <a href = \"user-update.php?id=".$assoc_row['student_ID']."&request=studentupdate\">Update</a>
         </td>
         ";
         echo "</tr>";
@@ -59,8 +59,8 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\"><button style = \"width: 105px; height: 60px;\" class = \"btn btn-primary\">Profile</button></a>
-            <a href = \"user-update.php\"><button class = \"btn btn-primary\">Update<br/> Information</button></a>
+            <a href = \"user-profile.php\">Profile</a>
+            <a href = \"user-update.php?id=".$assoc_row['student_ID']."&request=studentupdate\">Update</a>
         </td>
         ";
         echo "</tr>";

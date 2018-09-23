@@ -3,15 +3,21 @@ input{
     padding: 15px;
 }
 
-div{
+#divContainer{
     background-color: white;
     margin: 0 auto;
+
+    overflow: hidden;
 
     box-shadow: 1px 1px 10px 5px #888888;
 }
 
 button:hover, input[type=submit]{
     cursor: hand;
+}
+
+form{
+    margin-bottom: 3px;
 }
 
 input[type=password], input[type=text], .datePicker, datalist{
@@ -59,8 +65,4 @@ button{
 
     width: 80%;
     height: 60px;
-}
-
-form{
-    margin-bottom: 3px;
 }

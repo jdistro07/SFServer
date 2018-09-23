@@ -15,7 +15,7 @@ if(isset($_GET['search'])){
     class_grade, 
     class.class_section 
     
-    FROM class INNER JOIN staffs ON class.class_staff = staffs.staff_ID 
+    FROM class LEFT OUTER JOIN staffs ON class.class_staff = staffs.staff_ID 
     
     WHERE 
     staffs.staff_lname LIKE '%$searchKey%'
@@ -33,9 +33,10 @@ if(isset($_GET['search'])){
         echo "<tr>";
         echo "
             
-        <td>".$assoc_row['class_ID']."</td>
+        <td style = \"vertical-align: middle; text-align: center\">".$assoc_row['class_ID']."</td>
         <td>".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
-        <td>Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
+        <td style = \"vertical-align: middle; text-align: center\">Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
+        <td style = \"vertical-align: middle; text-align: center\"><a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
 
         ";
         echo "</tr>";
@@ -51,7 +52,7 @@ if(isset($_GET['search'])){
     class_grade, 
     class.class_section 
     
-    FROM class INNER JOIN staffs ON class.class_staff = staffs.staff_ID 
+    FROM class LEFT OUTER JOIN staffs ON class.class_staff = staffs.staff_ID 
 
     ORDER BY staffs.staff_lname ASC
     "
@@ -62,9 +63,12 @@ if(isset($_GET['search'])){
         echo "<tr>";
         echo "
             
-        <td>".$assoc_row['class_ID']."</td>
+        <td style = \"vertical-align: middle; text-align: center\">
+            <input type = \"checkbox\" name = \"deleteMark[]\" value = ".$assoc_row['class_ID'].">".$assoc_row['class_ID']."
+        </td>
         <td>".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
-        <td>Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
+        <td style = \"vertical-align: middle; text-align: center\">Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
+        <td style = \"vertical-align: middle; text-align: center\"><a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
 
         ";
         echo "</tr>";

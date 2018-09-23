@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 4.8.0.1
+- https://www.phpmyadmin.net
+-
+- Host: 127.0.0.1
+- Generation Time: Sep 06, 2018 at 01:00 PM
+- Server version: 10.1.32-MariaDB
+- PHP Version: 5.6.36
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="db_scriptforte" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="tests">
+                CREATE TABLE `tests` (
+                  `test_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Test entry ID',
+                  `test_staffAuthor` int(11) NOT NULL COMMENT 'Author of the Test',
+                  `test_name` char(64) NOT NULL COMMENT 'Name of the test',
+                  `test_type` char(20) NOT NULL COMMENT 'Type of test (Post-test, Pre-test)',
+                  PRIMARY KEY (`test_ID`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='Entry of pre-tests and post-tests';
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Database: 'db_scriptforte'
+    -->
+    <database name="db_scriptforte">
+        <!-- Table tests -->
+        <table name="tests">
+            <column name="test_ID">1</column>
+            <column name="test_staffAuthor">29</column>
+            <column name="test_name">JavaScript Statements</column>
+            <column name="test_type">Built-in</column>
+        </table>
+        <table name="tests">
+            <column name="test_ID">2</column>
+            <column name="test_staffAuthor">36</column>
+            <column name="test_name">JavaScript Loop Structures</column>
+            <column name="test_type">Built-in</column>
+        </table>
+    </database>
+</pma_xml_export>

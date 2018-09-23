@@ -1,3 +1,10 @@
+<?php 
+
+//initialize modules on start
+require 'php/auth-mods/auth-login.php';
+
+?>
+
 <html>
     <header>
         <title>Student Account Registration</title>
@@ -8,7 +15,7 @@
     </header>
 
     <body class="container-fluid fill-height">
-        <div class="col-lg-6 col-lg-offset-3">
+        <div id = "divContainer" class="col-lg-6 col-lg-offset-3">
             <center>
                 <h1>Student Registration</h1>
                 <br>
@@ -26,9 +33,9 @@
                     <input required = "required" name="username" type="text" placeholder="Username" value=""><br>
                     <input required = "required" name="password" type="password" placeholder="Password"/><br>
 
-                    <input name="register" type="submit" value="Register"><br>
+                    <input onclick = "return confirm('Approve registration?')" name="register" type="submit" value="Register"><br>
                 </form>
-                <a href="dashboard.html"><button>Cancel</button></a>
+                <a href="dashboard.php"><button>Cancel</button></a>
             </center>
         </div>
     </body>
@@ -43,7 +50,7 @@
             });
         });
     })
-</script>
+    </script>
 </html>
 
 <?php
