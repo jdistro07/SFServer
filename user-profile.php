@@ -134,7 +134,7 @@ function properize($string) {
                             break;
 
                             default:
-                            echo "<span class=\"badge badge-secondary\">Teacher Account</span>";
+                            echo "<span class=\"badge badge-secondary\">Student Account</span>";
                         }
                         ?><br>
                     </p>

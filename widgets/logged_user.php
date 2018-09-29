@@ -68,7 +68,7 @@
             </div>
 
             <div>
-                <form method = "get">
+                <form action = "php/mod_logout.php" method = "get">
                     <center><input id = "btn-logout" onclick = "return confirm('Are you sure to logout?')" class = "btn btn-danger" type = "submit" name = "btn-logout" value = "LOGOUT"></center>
                 </form>
             </div>
@@ -77,36 +77,3 @@
 
     </div>
 </html>
-
-<?php 
-
-if(isset($_GET['btn-logout'])){
-
-// Initialize the session.
-// If you are using session_name("something"), don't forget it now!
-
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Unset all of the session variables.
-$_SESSION = array();
-
-// If it's desired to kill the session, also delete the session cookie.
-// Note: This will destroy the session, and not just the session data!
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
-}
-
-// Finally, destroy the session.
-session_destroy();
-
-header("location: index.php");
-
-}
-
-?>
