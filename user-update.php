@@ -8,6 +8,9 @@ require ("php/mod_conn.php");
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 $requestType = mysqli_real_escape_string($conn, $_GET['request']);
 
+// user-profile redirect extra references
+$user_type;
+
 //personal credentials
 $q_fname;
 $q_mname;
@@ -34,6 +37,8 @@ $fetch_result;
 
 //query for values
 if($requestType == "staffupdate"){
+
+    $user_type = "staff";
     
     //get staff data
     $fetch_query = mysqli_query($conn, "
@@ -60,6 +65,8 @@ if($requestType == "staffupdate"){
     }
 
 }else if ($requestType == "studentupdate"){
+
+    $user_type = "student";
 
     //get student data
     $fetch_query = mysqli_query($conn, "
@@ -185,7 +192,7 @@ if($requestType == "staffupdate"){
                     if( $requestType == "staffupdate"){
                        if($q_account_level == 1){
                             echo('
-                                <select name = "access_Level">
+                                <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
                                     <option value = "'.$q_account_level.'">Currently (Administrator)</option>
                             ');
                        }else{
@@ -223,7 +230,14 @@ if($requestType == "staffupdate"){
                 }else{
                     die("Invalid request type to access update module!");
                 }
-                echo "<a href = \"".$linktoReturn."\"><button>Cancel</button></a>";
+                
+                if(!isset($_GET['redirect']) == "userprofile"){
+                    echo "<a href = \"".$linktoReturn."\"><button>Cancel</button></a>";
+                }else{
+                    echo "<a href = \"user-profile.php?id=$id&user=$q_username&userType=$user_type\"><button>Cancel</button></a>";
+                }
+
+                
                 ?>
             </center>
         </div>
@@ -246,6 +260,7 @@ if($requestType == "staffupdate"){
 
 //error messages
 $username_exist = "<script>alert(\"Username already exist\")</script>";
+$pf_update_query;
 
 //universal variables
 $redirect_location;
@@ -268,6 +283,38 @@ if(isset($_POST['update'])){
         $password;
         $enc_password;
 
+        //update PF Information
+        $q_target_staff = mysqli_query($conn, 
+        "SELECT 
+        staffs.staff_ID,
+        staffs.staff_username AS username,
+        COUNT(performance_data.pf_id)
+        
+        FROM `performance_data` INNER JOIN staffs ON staffs.staff_ID = performance_data.pf_userID
+        
+        WHERE staffs.staff_ID = $id");
+
+        $r_target_staff = mysqli_fetch_assoc($q_target_staff);
+
+        // update if the results is more than 0
+        if($count_target_staff = mysqli_num_rows($q_target_staff) > 0){
+
+            $target_staff_id = $r_target_staff['staff_ID'];
+            $target_staff_username = $r_target_staff['username'];
+
+            $update_staff_pfdata = mysqli_query($conn, 
+            "UPDATE 
+            `performance_data` 
+            
+            SET 
+            `pf_username`= '$username'
+            
+            WHERE 
+            performance_data.pf_userID = $target_staff_id AND
+            performance_data.pf_username = '$target_staff_username'");
+
+        }
+
         //redirect location
         $redirect_location = "location: staff-search.php";
 
@@ -277,8 +324,9 @@ if(isset($_POST['update'])){
             $password = mysqli_real_escape_string($conn, $_POST['password']);
             $enc_password = password_hash($password,PASSWORD_BCRYPT);
 
-            $update = mysqli_query($conn,"
-            UPDATE `staffs` 
+            $update = mysqli_multi_query($conn,
+
+            "UPDATE `staffs` 
 
             SET 
             `staff_fname`='".$fname."',
@@ -298,8 +346,9 @@ if(isset($_POST['update'])){
         }else{
 
             // if inputfield password is empty then do not update the password
-            $update = mysqli_query($conn,"
-            UPDATE `staffs` 
+            $update = mysqli_multi_query($conn,
+
+            "UPDATE `staffs` 
 
             SET 
             `staff_fname`='".$fname."',
@@ -313,6 +362,7 @@ if(isset($_POST['update'])){
             `staff_accountLevel`='".$acc_level."'
             
             WHERE `staff_ID` = '$id'
+
             ") or die (mysqli_error($conn));
         }
 
@@ -328,6 +378,38 @@ if(isset($_POST['update'])){
         $username = mysqli_real_escape_string($conn, $_POST['username']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 
+        //update PF Information
+        $q_target_student = mysqli_query($conn, 
+        "SELECT 
+        students.students_ID,
+        students.students_username AS username,
+        COUNT(performance_data.pf_id)
+        
+        FROM `performance_data` INNER JOIN students ON students.students_ID = performance_data.pf_userID
+        
+        WHERE students.students_ID = $id");
+
+        $r_target_student = mysqli_fetch_assoc($q_target_student);
+
+        // update if the results is more than 0
+        if($count_target_student = mysqli_num_rows($q_target_student) > 0){
+
+            $target_student_id = $r_target_student['staff_ID'];
+            $target_student_username = $r_target_student['username'];
+
+            $update_student_pfdata = mysqli_query($conn, 
+            "UPDATE 
+            `performance_data` 
+            
+            SET 
+            `pf_username`= '$username'
+            
+            WHERE 
+            performance_data.pf_userID = $target_student_id AND
+            performance_data.pf_username = '$target_student_username'");
+
+        }
+
         //redirect location
         $redirect_location = "location: student-search.php";
 
@@ -337,9 +419,9 @@ if(isset($_POST['update'])){
             $student_enc_password = password_hash($password,PASSWORD_BCRYPT);
 
             //update student information
-            $student_query = mysqli_query($conn,"
-            
-            UPDATE `students` 
+            $student_query = mysqli_query($conn,
+
+            "UPDATE `students` 
 
             SET 
             `student_fname`='".$fname."',
@@ -361,9 +443,9 @@ if(isset($_POST['update'])){
 
             // if inputfield password is empty then do not update the password
             //update student information
-            $student_query = mysqli_query($conn,"
-            
-            UPDATE `students` 
+            $student_query = mysqli_query($conn,
+
+            "UPDATE `students` 
 
             SET 
             `student_fname`='".$fname."',
@@ -382,7 +464,13 @@ if(isset($_POST['update'])){
         }
     }
 
-    header($redirect_location);
+    if(!$_GET['redirect'] == "userprofile"){
+        header($redirect_location);
+    }else{
+        header('location: user-profile.php?id='.$id.'&user='.$username."&userType=".$user_type);
+    }
+
+    
 }
 
 ?>

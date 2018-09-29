@@ -56,8 +56,8 @@
             ?>
                     
             <li class = "list-group-item active">Test Management</li>
-            <a class="list-group-item" href="../#">Test List</a>
-            <a class="list-group-item" href="../#">Make a Test</a>
+            <a class="list-group-item" href="../maketest.php">Test List</a>
+            <a class="list-group-item" href="../maketest.php?request=create">Make a Test</a>
 
         </div>
     </div>

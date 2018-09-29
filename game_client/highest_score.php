@@ -26,12 +26,13 @@ performance_data.pf_testMode,
     
     @post := MAX(performance_data.pf_rating)
     
-    FROM performance_data
+    FROM performance_data LEFT JOIN tests ON performance_data.pf_testID = tests.test_ID
     
     WHERE 
     performance_data.pf_testMode = 'POST' AND 
     performance_data.pf_userID = $userID AND
-    performance_data.pf_username = '$username'
+    performance_data.pf_username = '$username' AND
+    tests.test_ID = $test_ID
     
 
 ) AS post

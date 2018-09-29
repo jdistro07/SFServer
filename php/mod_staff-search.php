@@ -34,7 +34,7 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."\">Profile</a>
+            <a href = \"user-profile.php?id=".$assoc_row['staff_ID']."&user=".$assoc_row['staff_username']."&userType=staff\">Profile</a>
             <a href = \"user-update.php?id=".$assoc_row['staff_ID']."&request=".$requestType."\">Update</a>
         </td>
         ";
@@ -61,7 +61,7 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-update.php?id=".$assoc_row['staff_ID']."\">Profile</a>
+            <a href = \"user-profile.php?id=".$assoc_row['staff_ID']."&user=".$assoc_row['staff_username']."&userType=staff\">Profile</a>
             <a href = \"user-update.php?id=".$assoc_row['staff_ID']."&request=".$requestType."\">Update</a>
         </td>
         ";

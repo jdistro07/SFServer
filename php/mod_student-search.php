@@ -32,7 +32,7 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\">Profile</a>
+            <a href = \"user-profile.php?id=".$assoc_row['student_ID']."&user=".$assoc_row['student_username']."&userType=student\">Profile</a>
             <a href = \"user-update.php?id=".$assoc_row['student_ID']."&request=studentupdate\">Update</a>
         </td>
         ";
@@ -59,7 +59,7 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle;\">".$assoc_row['student_lname'].", ".$assoc_row['student_fname']." ".$assoc_row['student_mname']."</td>
         
         <td style = \"vertical-align: middle; text-align: center\">
-            <a href = \"user-profile.php\">Profile</a>
+            <a href = \"user-profile.php?id=".$assoc_row['student_ID']."&user=".$assoc_row['student_username']."&userType=student\">Profile</a>
             <a href = \"user-update.php?id=".$assoc_row['student_ID']."&request=studentupdate\">Update</a>
         </td>
         ";
