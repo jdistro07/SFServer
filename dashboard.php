@@ -71,7 +71,6 @@ require 'php/auth-mods/auth-login.php';
                     <tbody></tbody>
                 </table>
             <div>
-
         </div>
 
     </body>

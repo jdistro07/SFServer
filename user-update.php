@@ -283,6 +283,11 @@ if(isset($_POST['update'])){
         $password;
         $enc_password;
 
+        // replace new session value for username if it's the account owner
+        if(isset($_GET['accproperty'])){
+            $_SESSION["username"] = $username;
+        }
+
         //update PF Information
         $q_target_staff = mysqli_query($conn, 
         "SELECT 

@@ -1,6 +1,12 @@
 <?php
 
+// start session if no sessions are found
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
 require 'mod_conn.php';
+$current_user = $_SESSION["username"];
 
 $requestType = "staffupdate";
 
@@ -17,6 +23,8 @@ if(isset($_GET['search'])){
     staffs.staff_lname LIKE '%$searchKey%'
     OR
     staffs.staff_fname LIKE '%$searchKey%'
+    AND 
+    staffs.staff_username != '$current_user'
 
     ORDER BY staffs.staff_lname ASC
     "

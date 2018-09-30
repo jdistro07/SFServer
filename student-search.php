@@ -21,11 +21,11 @@ require 'php/auth-mods/auth-login.php';
         <div><?php include ("widgets/navigation.php");?></div>
         <div><?php include ("widgets/logged_user.php");?></div>
 
-        <div style = "overflow-y: auto; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
+        <div style = "auto; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
             <center><h1>STUDENT ACCOUNTS</h1></center>
             <div class = "form-group">
                 <input class="form-control" id="txt_searchbox" type = "text" placeholder="Student Name" name="txt_search" autofocus>
-                <input class="form-control" id="txt_search" type = "button" value="Search" name="btn_search" autofocus>
+                <input class="form-control" id="txt_search" type = "button" value="Search" name="btn_search">
             </div>
 
             <div>
@@ -59,6 +59,16 @@ require 'php/auth-mods/auth-login.php';
             $.get('php/mod_student-search.php',{search:searchtext}, function(response){
                 $('#search-results').html(response);
             });
+        });
+
+        $('#txt_searchbox').on('keyup', function(event){
+
+            event.preventDefault();
+
+            if(event.keyCode == 13){
+                $('#txt_search').click();
+            }
+
         });
     })
 </script>

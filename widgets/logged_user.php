@@ -4,8 +4,9 @@
         <link href="../css/global-style.css" rel="stylesheet" type="text/css"/>
 
         <style>
-            #btn-logout{
+            #btn-logout, #btn_profile{
                 width: 200px;
+                margin: 5px; auto, auto, auto;
             }
         </style>
     </header>
@@ -68,6 +69,7 @@
             </div>
 
             <div>
+                <center><a href = "user-profile.php?id=<?php echo $_SESSION["user_ID"];?>&user=<?php echo $_SESSION["username"];?>&userType=staff&accproperty=owner"><button id = "btn_profile" type="button" class="btn btn-primary">PROFILE</button></a><center>
                 <form action = "php/mod_logout.php" method = "get">
                     <center><input id = "btn-logout" onclick = "return confirm('Are you sure to logout?')" class = "btn btn-danger" type = "submit" name = "btn-logout" value = "LOGOUT"></center>
                 </form>

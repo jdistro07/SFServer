@@ -79,7 +79,7 @@ if($_GET['userType'] == "staff"){
     //set staff credential values
     $r_q_find_student = mysqli_fetch_assoc($q_find_student);
 
-    $name = $r_q_find_student['student_lname'].", ".$r_q_find_student['student_lname']." ".$r_q_find_student['student_mname'];
+    $name = $r_q_find_student['student_lname'].", ".$r_q_find_student['student_fname']." ".$r_q_find_student['student_mname'];
     $lname = $r_q_find_student['student_lname'];
     $id = $r_q_find_student['student_ID'];
     $account_level = $r_q_find_student['student_accountLevel'];
@@ -116,7 +116,7 @@ function properize($string) {
         <div><?php include 'widgets/logged_user.php';?></div>
 
         <!-- Main contnainer -->
-        <div style = "height: 800px; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
+        <div style = "height: 1030px; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
 
             <!--User profile-->
             <div class="card">
@@ -180,11 +180,15 @@ function properize($string) {
                         </div>
 
                     </div>
-                    <a href="user-update.php?id=<?php echo $user_id;?>&request=<?php echo $requestType;?>&redirect=user-profile" class="btn btn-secondary">Update Profile</a>
+                    <a href="user-update.php?id=<?php echo $user_id;?>&request=<?php echo $requestType;?>&redirect=user-profile<?php if(isset($_GET['accproperty'])){echo '&accproperty='.$_GET['accproperty'];}?>" class="btn btn-secondary">Update Profile</a>
                 </div>
             </div>
             
             <!--Chart-->
+            <div style = "margin-bottom: 20px;">
+                <canvas style = "height: 200px; width: 100%" id = "performanceLineChartPre"></canvas>
+            </div>
+
             <div style = "margin-bottom: 20px;">
                 <canvas style = "height: 200px; width: 100%" id = "performanceLineChart"></canvas>
             </div>
@@ -198,7 +202,9 @@ function properize($string) {
                     <tr>
                     <th scope="col">Test ID#</th>
                     <th scope="col">Test Name</th>
+                    <th scope="col">Mode</th>
                     <th scope="col">Rating</th>
+                    <th scope="col">Date</th>
                     </tr>
                 </thead>
 
@@ -208,38 +214,95 @@ function properize($string) {
                     $performance = array();
 
                     if($rating != "Unrated"){
-                    
+                        // post-test
                         $q_performance = mysqli_query($conn,
                         "SELECT 
-                        performance_data.*,
-                        tests.test_name,
-                        tests.test_ID,
-                        tests.test_type
+                        IFNULL(tests.test_name, '[Removed]') as test_name,
+                        IFNULL(tests.test_type, '[Removed]') as test_type,
+                        performance_data.*
+                                                
+                        FROM (
+                            SELECT * 
+                            FROM performance_data 
+                            WHERE 
+                            performance_data.pf_userID = $user_id AND
+                            performance_data.pf_username = '".$user_username."'
+                            ORDER BY performance_data.pf_timestamp DESC
+                        )performance_data
                         
-                        FROM `performance_data` LEFT JOIN tests 
+                        LEFT JOIN tests 
+                        ON performance_data.pf_testID = tests.test_ID
+                        
+                        WHERE
+                        performance_data.pf_testMode = 'POST'
+                                             
+                        ORDER BY pf_timestamp DESC LIMIT 5
+                        ");
+
+                        while($r_performance = mysqli_fetch_array($q_performance, MYSQLI_ASSOC)){
+                            // store values as an array for post-test chart
+                            $performance[] = $r_performance;
+                        }
+
+                        //pre-test
+                        $q_pre_performance = mysqli_query($conn,
+                        "SELECT 
+                        IFNULL(tests.test_name, '[Removed]') as test_name,
+                        IFNULL(tests.test_type, '[Removed]') as test_type,
+                        performance_data.*
+                                                
+                        FROM (
+                            SELECT * 
+                            FROM performance_data 
+                            WHERE 
+                            performance_data.pf_userID = $user_id AND
+                            performance_data.pf_username = '".$user_username."'
+                            ORDER BY performance_data.pf_timestamp DESC
+                        )performance_data
+
+                        LEFT JOIN tests 
+                        ON performance_data.pf_testID = tests.test_ID
+
+                        WHERE
+                        performance_data.pf_testMode = 'PRE'
+                                            
+                        ORDER BY pf_timestamp DESC LIMIT 5
+                        ");
+
+                        $q_test_history = mysqli_query($conn,
+                        "SELECT 
+                        tests.test_ID,
+                        IFNULL(tests.test_name, '[Removed Test]') as test_name,
+                        IFNULL(CONCAT('[',tests.test_type,']'), '') as test_type,
+                        performance_data.*
+                        
+                        FROM performance_data LEFT JOIN tests 
                         ON performance_data.pf_testID = tests.test_ID
                         
                         WHERE 
                         performance_data.pf_userID = $user_id AND
-                        performance_data.pf_username = '".$user_username."'
+                        performance_data.pf_username = '".$user_username."' 
                         
-                        ORDER BY performance_data.pf_timestamp ASC LIMIT 5
+                        ORDER BY pf_timestamp DESC
                         ");
-                    
-                        while($r_performance = mysqli_fetch_array($q_performance, MYSQLI_ASSOC)){
-                    
-                            // store values as an array for the chart
-                            $performance[] = $r_performance;
+
+                        while($r_pre_performance = mysqli_fetch_array($q_pre_performance, MYSQLI_ASSOC)){
+                            // store values as an array for post-test chart
+                            $pre_performance[] = $r_pre_performance;
+                        }
+
+                        while($r_test_history = mysqli_fetch_assoc($q_test_history)){
 
                             // display table contents
                             echo '<tr>';
-                            echo '<th scope="row">'.$r_performance['test_ID'].'</th>';
-                            echo '<td>['.$r_performance['test_type'].'] '.$r_performance['test_name'].'</td>';
-                            echo '<td>'.$r_performance['pf_rating'].'%</td>';
+                            echo '<th scope="row">'.$r_test_history['test_ID'].'</th>';
+                            echo '<td>'.$r_test_history['test_type'].' '.$r_test_history['test_name'].'</td>';
+                            echo '<td>'.$r_test_history['pf_testMode'].'</td>';
+                            echo '<td>'.$r_test_history['pf_rating'].'%</td>';
+                            echo '<td>'.date('dS F Y @ h:i:s A',strtotime($r_test_history['pf_timestamp'])).'</td>';
                             echo '</tr>';
-                    
-                        }
 
+                        }
                     }
                     ?>
                 </tbody>
@@ -254,24 +317,29 @@ function properize($string) {
         $(document).ready(function(){
 
             var chart = $('#performanceLineChart')[0].getContext('2d');
+            var chartPre = $('#performanceLineChartPre')[0].getContext('2d');
+
+            var pre_performanceValues = <?php echo json_encode($pre_performance)?>;
             var performanceValues = <?php echo json_encode($performance)?>;
 
-            //console.log(performanceValues);
+            console.log(pre_performanceValues);
 
-            var performance_chart = new Chart(chart, {
+            //console.log(performanceValues);
+            var pre_performance_chart = new Chart(chartPre, {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'Historical Performance graph',
+                        label: 'Pre-test',
                         data: [],
                         backgroundColor: [
-                            'rgba(134,26,192,.5)'
+                            'rgba(25, 181, 254, .5)'
                         ],
                         borderColor: [
-                            'rgba(68, 25, 91, 1)'
+                            
+                            'rgba(0, 0, 255, 1)'
                         ],
-                        borderWidth: 1,
+                        borderWidth: 2,
                     }]
                 },
                 options: {
@@ -285,12 +353,72 @@ function properize($string) {
                         }]
                     }
                 }
-            }); 
+                
+            });
 
-            for(let i = 0; i < performanceValues.length; i++){
+            var performance_chart = new Chart(chart, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Post-test',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(250, 190, 88, .5)'
+                        ],
+                        borderColor: [
+                            
+                            'rgba(0, 0, 255, 1)'
+                        ],
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+                
+            });
+            
+            /*for(let i = pre_performanceValues.length - 1; i != 0; i--){
+                console.log(i);
+                pre_performance_chart.data.labels[i] = pre_performanceValues[i].test_name;
+                pre_performance_chart.data.datasets[0].data[i] = pre_performanceValues[i].pf_rating;
+                
+            }
+
+            // loop post-test
+            for(let i = performanceValues.length - 1; i != 0; i--){
                 performance_chart.data.labels[i] = performanceValues[i].test_name;
                 performance_chart.data.datasets[0].data[i] = performanceValues[i].pf_rating;
-            }
+            }*/
+            
+            var i = pre_performanceValues.length;
+            do{
+                i--;
+
+                pre_performance_chart.data.labels[i] = pre_performanceValues[i].test_name.substring(0,13)+"...";
+                pre_performance_chart.data.datasets[0].data[i] = pre_performanceValues[i].pf_rating;
+                
+            }while(i > 0)
+
+            var post_i = performanceValues.length
+            do{
+                post_i--
+
+                performance_chart.data.labels[post_i] = performanceValues[post_i].test_name.substring(0,13)+"...";
+                performance_chart.data.datasets[0].data[post_i] = performanceValues[post_i].pf_rating;
+
+            }while(post_i > 0)
+
+            pre_performance_chart.update();
             performance_chart.update();
         });
     </script>
