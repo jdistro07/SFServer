@@ -45,7 +45,6 @@ require 'php/auth-mods/auth-login.php';
                             <tbody id = "search-results"><?php require 'php/mod_student-search.php'; ?></tbody>
                         </table>
                     </div>
-                    
                 <form>
             </div>
         </div>

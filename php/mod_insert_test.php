@@ -48,7 +48,7 @@ if($insert_test){
 
     for($i = 0; $i < count($formatted_text); $i++){
 
-        $text = $formatted_text[$i];
+        $text = mysqli_real_escape_string($conn, $formatted_text[$i]);
         $id = $r_testID['lastID'];
 
         $insert_question = mysqli_query($conn, 
@@ -63,7 +63,7 @@ if($insert_test){
 
     }
 
-    echo "<script>alert('Your test has been published!')</script>";
+    //echo "<script>alert('Your test has been published!')</script>";
     header('location:../maketest.php');
 
 }

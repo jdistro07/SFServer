@@ -322,9 +322,7 @@ function properize($string) {
             var pre_performanceValues = <?php echo json_encode($pre_performance)?>;
             var performanceValues = <?php echo json_encode($performance)?>;
 
-            console.log(pre_performanceValues);
-
-            //console.log(performanceValues);
+            // pre-test line graph
             var pre_performance_chart = new Chart(chartPre, {
                 type: 'line',
                 data: {
@@ -356,6 +354,7 @@ function properize($string) {
                 
             });
 
+            // post test line graph
             var performance_chart = new Chart(chart, {
                 type: 'line',
                 data: {
@@ -387,39 +386,34 @@ function properize($string) {
                 
             });
             
-            /*for(let i = pre_performanceValues.length - 1; i != 0; i--){
-                console.log(i);
-                pre_performance_chart.data.labels[i] = pre_performanceValues[i].test_name;
-                pre_performance_chart.data.datasets[0].data[i] = pre_performanceValues[i].pf_rating;
-                
+            if(pre_performanceValues.length > 0){
+                var i = pre_performanceValues.length;
+
+                do{
+                    i--;
+
+                    pre_performance_chart.data.labels[i] = pre_performanceValues[i].test_name.substring(0,13)+"...";
+                    pre_performance_chart.data.datasets[0].data[i] = pre_performanceValues[i].pf_rating;
+                    
+                }while(i > 0)
+
+                pre_performance_chart.update();
             }
-
-            // loop post-test
-            for(let i = performanceValues.length - 1; i != 0; i--){
-                performance_chart.data.labels[i] = performanceValues[i].test_name;
-                performance_chart.data.datasets[0].data[i] = performanceValues[i].pf_rating;
-            }*/
             
-            var i = pre_performanceValues.length;
-            do{
-                i--;
+            
+            if(performanceValues.length > 0){
+                var post_i = performanceValues.length;
 
-                pre_performance_chart.data.labels[i] = pre_performanceValues[i].test_name.substring(0,13)+"...";
-                pre_performance_chart.data.datasets[0].data[i] = pre_performanceValues[i].pf_rating;
-                
-            }while(i > 0)
+                do{
+                    post_i--
 
-            var post_i = performanceValues.length
-            do{
-                post_i--
+                    performance_chart.data.labels[post_i] = performanceValues[post_i].test_name.substring(0,13)+"...";
+                    performance_chart.data.datasets[0].data[post_i] = performanceValues[post_i].pf_rating;
 
-                performance_chart.data.labels[post_i] = performanceValues[post_i].test_name.substring(0,13)+"...";
-                performance_chart.data.datasets[0].data[post_i] = performanceValues[post_i].pf_rating;
+                }while(post_i > 0)
 
-            }while(post_i > 0)
-
-            pre_performance_chart.update();
-            performance_chart.update();
+                performance_chart.update();
+            }
         });
     </script>
 </html>

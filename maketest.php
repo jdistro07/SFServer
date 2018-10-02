@@ -32,9 +32,10 @@ require 'php/auth-mods/auth-login.php';
             
             #question_container{
                 
-                max-height: 70%;
-                overflow-y: scroll;
-                position : relative;
+                min-height:620px;
+                max-height: 620px;
+                overflow-y: auto;
+                position: relative;
                 
             }
             
@@ -57,7 +58,7 @@ require 'php/auth-mods/auth-login.php';
             <form action = "php/mod_insert_test.php" method = "post">
                 <div class = "form-group">
 
-                    <input class = "form-control" type = "text" name = "test-name" placeholder = "Test Name">
+                    <input required class = "form-control" type = "text" name = "test-name" placeholder = "Test Name">
                     
                     <div class="input-group mb-3">
                         <input id = "question_count_value" type="text" class="form-control" placeholder="Question item count" aria-label="Question item count" aria-describedby="basic-addon2">
@@ -77,9 +78,9 @@ require 'php/auth-mods/auth-login.php';
 
                 </div>
 
-                <div id = "question_container"><!--Test question items goes here--></div>
+                <div  id = "question_container"><!--Test question items goes here--></div>
                 
-                <div id = "formatted_question"><!--Formatted questions goes here--></div>
+                <div hidden id = "formatted_question"><!--Formatted questions goes here--></div>
             </form>
             </div>
         </div>
@@ -100,7 +101,7 @@ require 'php/auth-mods/auth-login.php';
             '</button>'+
 
             '<span class = "badge badge-secondary">Question Type</span>'+
-            '<select onchange = "question_values(this.value, this)" style = "width: 200px;" id = "test-type" class = "form-control">'+
+            '<select required onchange = "question_values(this.value, this)" style = "width: 200px;" id = "test-type" class = "form-control">'+
             '<option value = "not-set" disabled selected>Question Type</option>'+
             '<option value = "mc">Multiple choice</option>'+
             '<option value = "tf">True or False</option>'+
@@ -110,7 +111,7 @@ require 'php/auth-mods/auth-login.php';
             '<div class="input-group-prepend">'+
             '<span class="input-group-text" id="basic-addon3">Question</span>'+
             '</div>'+
-            '<input type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3">'+
+            '<input required type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3">'+
             '</div>'+
             '<div id = "questionValue" class="form-row"></div>'+
             '<div id = "questionAnswer"></div>'
@@ -155,17 +156,17 @@ require 'php/auth-mods/auth-login.php';
             
             var mc_a = 
             '<div id = "mc_value" class="col">'+
-            '<input type="text" class="form-control" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'+
+            '<input required type="text" class="form-control" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'+
             '</div>';
 
             var mc_b = 
             '<div id = "mc_value" class="col">'+
-            '<input type="text" class="form-control" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'+
+            '<input required type="text" class="form-control" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'+
             '</div>';
 
             var mc_c = 
             '<div id = "mc_value" class="col">'+
-            '<input type="text" class="form-control" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'+
+            '<input required type="text" class="form-control" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'+
             '</div>';
             
             var tf_answer =
@@ -197,6 +198,8 @@ require 'php/auth-mods/auth-login.php';
         }
         
         $('#btnPublish').on('click', function(){
+
+            $(this).parent().parent().find('#formatted_question').children('input').remove();
 			
             var confirmation = confirm("Confirm publication?");
             
