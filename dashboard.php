@@ -27,13 +27,32 @@ $userid = $_SESSION["user_ID"];
 
             <center><h1>Dashboard</h1></center>
 
+            <!--ComboBox-->
+            <select style="width: 100%">
+            	<option value="" disabled selected> - Select a class - </option>
+                <?php
+                    $fetchLevels = mysqli_query($conn,
+                        "SELECT class_grade, class_section
+                         FROM class
+                         WHERE class_staff = $userid"
+                    );
+
+                    while ($gradeLevels = mysqli_fetch_assoc($fetchLevels))
+                    {
+                        echo '<option value="'.$gradeLevels['class_grade'].'">';
+                        echo "Grade " . $gradeLevels['class_grade'] . " - " . $gradeLevels['class_section'];
+                        echo "</option>";
+                    }
+                ?>
+            </select>
+
             <!--Test list table-->
             <div>
                 <h4 style = "margin: 2px 2px 2px 2px;">Test list</h4>
                 <hr style = "margin: 2px 2px 5px 2px;"/>
             </div>
             <form action = "../php/mod_deleteTest.php" method = "POST">
-                <input class = "btn btn-danger" type = "submit" value = "Delete" name = "btn-testDelete">
+                <input onclick = "return confirm('Confirm deleting marked tests?')" class = "btn btn-danger" type = "submit" value = "Delete" name = "btn-testDelete">
 
                 <div style = "overflow-y: auto; max-height: 300px; 300px; border-color: black; border-width: 3px;">
                     <table class="table table-hover table-sm">
@@ -70,7 +89,7 @@ $userid = $_SESSION["user_ID"];
                             while($r_ownedTests = mysqli_fetch_assoc($q_ownedTests)){
                                 echo '<tr>';
                                 echo '<th scope="row"><input type = "checkbox" name = "testsMark[]" value = '.$r_ownedTests['test_ID'].'></th>';
-                                echo '<td style = "width: 300px;"><a style = "text-decoration: none;" href = "maketest.php?request=update?testID='.$r_ownedTests['test_ID'].'&owner='.$userid.'">'.$r_ownedTests['test_name'].'</a></td>';
+                                echo '<td style = "width: 300px;"><a style = "text-decoration: none;" href = "maketest.php?request=update&testID='.$r_ownedTests['test_ID'].'&owner='.$userid.'">'.$r_ownedTests['test_name'].'</a></td>';
                                 echo '<td>'.$r_ownedTests['authorName'].'</td>';
                                 echo '<td>'.$r_ownedTests['test_type'].'</td>';
 

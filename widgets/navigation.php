@@ -25,7 +25,7 @@
         <div class="list-group">
 
             <li class = "list-group-item disabled"><center>Navigation Menu</center></li>
-            <a class="list-group-item" href="../dashboard.php">Dashboard</a>
+            <a class="list-group-item" href="dashboard.php">Dashboard</a>
             <li class = "list-group-item active">User Management</li>
 
             <?php
@@ -33,31 +33,31 @@
             if($_SESSION['user_account_level'] == 1){
 
                 //admin only User Management Modules
-                echo '<a class="list-group-item" href="../staff-search.php">Staff Accounts List</a>';
-                echo '<a class="list-group-item" href="../student-search.php">Student Accounts List</a>';
-                echo '<a class="list-group-item" href="../register-staff.php">Staff Registration</a>';
+                echo '<a class="list-group-item" href="staff-search.php">Staff Accounts List</a>';
+                echo '<a class="list-group-item" href="student-search.php">Student Accounts List</a>';
+                echo '<a class="list-group-item" href="register-staff.php">Staff Registration</a>';
 
             }
             
             ?>
             
-            <a class="list-group-item" href="../register-student.php">Students Registration</a>
+            <a class="list-group-item" href="register-student.php">Students Registration</a>
 
             <?php 
             
             if($_SESSION['user_account_level'] == 1){
 
                 echo '<li class = "list-group-item active">Classes Management</li>';
-                echo '<a class="list-group-item" href="../class-search.php">List of Classes</a>';
-                echo '<a class="list-group-item" href="../register-classes.php">Register Classes</a>';
+                echo '<a class="list-group-item" href="class-search.php">List of Classes</a>';
+                echo '<a class="list-group-item" href="register-classes.php">Register Classes</a>';
 
             }
             
             ?>
                     
             <li class = "list-group-item active">Test Management</li>
-            <a class="list-group-item" href="../maketest.php">Test List</a>
-            <a class="list-group-item" href="../maketest.php?request=create">Make a Test</a>
+            <a class="list-group-item" href="maketest.php">Test List</a>
+            <a class="list-group-item" href="maketest.php?request=create">Make a Test</a>
 
         </div>
     </div>

@@ -63,8 +63,11 @@ if($insert_test){
 
     }
 
-    //echo "<script>alert('Your test has been published!')</script>";
-    header('location:../maketest.php');
+    echo 
+    "<script>
+        alert('Test published successfully');
+        window.location.href='../dashboard.php';
+    </script>";
 
 }
 
