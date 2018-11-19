@@ -24,6 +24,7 @@ $class_query_result = mysqli_fetch_assoc($class_entry);
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
         <script src = "js/jquery.js"></script>
+        <script src = "js/functions.js"></script>
     </header>
 
     <body class="container-fluid fill-height">
@@ -32,10 +33,43 @@ $class_query_result = mysqli_fetch_assoc($class_entry);
                 <h1>Class Registration</h1>
                 <br>
                 <form method = "post">
-                    <input value = "<?php echo $class_query_result['class_staff']; ?>"  id = "staff" required = "required" name="classStaff" type="text" placeholder="Class Staff" list = "result-staffs" autofocus/><br>
-                    <datalist id="result-staffs"></datalist>
-                    <input value = "<?php echo $class_query_result['class_grade']; ?>" required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
-                    <input value = "<?php echo $class_query_result['class_section']; ?>" required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
+
+                    <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name="classStaff">
+                    
+                    <?php
+                    
+                    // list all staffs and select the one currently assigned
+                    $q_staffs = mysqli_query(
+                        $conn, 
+                        "SELECT * FROM staffs ORDER BY staff_lname ASC
+                        "
+                    ) or die ("<script>Something went wrong retreiving the list of Staff accounts!</script>");
+                    
+                    while($r_staffs = mysqli_fetch_assoc($q_staffs)){
+
+                        $account_lvl = "";
+                        $currentStaff = "";
+                        
+                        if($r_staffs['staff_accountLevel'] == 1){
+                            $account_lvl = "Administrator";
+                        }else{
+                            $account_lvl = "Teacher";
+                        }
+                        
+                        if($r_staffs['staff_ID'] == $class_query_result['class_staff']){
+                            $currentStaff = "selected";
+                        }
+
+                        echo "<option value = \"".$r_staffs['staff_ID']."\" $currentStaff>".$r_staffs['staff_lname'].", ".$r_staffs['staff_fname']." ".$r_staffs['staff_mname']." - (".$account_lvl.")</option>";
+
+                    }
+
+                    ?>
+                    
+                    </select>
+
+                    <input onkeyup = "numericOnly(this)" value = "<?php echo $class_query_result['class_grade']; ?>" required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
+                    <input onkeyup = "textOnly(this)" value = "<?php echo $class_query_result['class_section']; ?>" required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
 
                     <input onclick = "return confirm('Confirm updating the selected class?')" name="register" type="submit" value="Update Class Information"><br>
                 </form>
@@ -44,18 +78,6 @@ $class_query_result = mysqli_fetch_assoc($class_entry);
         </div>
     </body>
 </html>
-
-    <script>
-    $(document).ready(function(){
-        $('#staff').keyup(function(){
-            var searchtext = $('#staff').val();
-
-            $.get('php/minimod_staff-search.php',{search:searchtext}, function(response){
-                $('#result-staffs').html(response);
-            });
-        });
-    })
-    </script>
 
 <?php
 
@@ -77,7 +99,13 @@ if(isset($_POST['register'])){
 
     ") or die(mysqli_error($conn));
 
-    header("location: class-search.php");
+    if($query){
+        echo 
+        "<script>
+            alert('Class has been updated successfully!');
+            window.location.href='class-search.php';
+        </script>";
+    }
 
 }
 

@@ -13,4 +13,6 @@ require ("../php/mod_conn.php");
 		VALUES ($userID, '$username', $testID, '$testMode', $rating)
 
 		") or die ("Failed to upload values to database.");
+
+	mysqli_close($conn);
 ?>

@@ -64,8 +64,6 @@ while($r_questions = mysqli_fetch_assoc($q_questions)){
 
 }
 
-
-
-
+mysqli_close($conn);
 
 ?>

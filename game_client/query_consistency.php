@@ -13,4 +13,6 @@ $score_query_result = mysqli_fetch_assoc($score_query);
 
 echo round($score_query_result['AVG(pf_rating)'],2);
 
+mysqli_close($conn);
+
 ?>

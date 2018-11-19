@@ -36,7 +36,7 @@ if(isset($_GET['search'])){
         <td style = \"vertical-align: middle; text-align: center\">".$assoc_row['class_ID']."</td>
         <td>".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         <td style = \"vertical-align: middle; text-align: center\">Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
-        <td style = \"vertical-align: middle; text-align: center\"><a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
+        <td style = \"vertical-align: middle; text-align: center\"><a href = \"class_list.php?id=".$assoc_row['class_ID']."\">View</a> <a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
 
         ";
         echo "</tr>";
@@ -68,7 +68,7 @@ if(isset($_GET['search'])){
         </td>
         <td>".$assoc_row['staff_lname'].", ".$assoc_row['staff_fname']." ".$assoc_row['staff_mname']."</td>
         <td style = \"vertical-align: middle; text-align: center\">Grade ".$assoc_row['class_grade']." - ".$assoc_row['class_section']."</td>
-        <td style = \"vertical-align: middle; text-align: center\"><a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
+        <td style = \"vertical-align: middle; text-align: center\"><a href = \"class_list.php?id=".$assoc_row['class_ID']."\">View</a> <a href = \"update-classes.php?id=".$assoc_row['class_ID']."\">Update</a></td>
 
         ";
         echo "</tr>";

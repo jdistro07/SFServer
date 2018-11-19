@@ -13,62 +13,79 @@
 require 'mod_conn.php';
 require 'auth-mods/auth-login.php';
 
-$currentUser = $_SESSION["user_ID"];
-$test_name = $_POST['test-name'];
-$formatted_text = $_POST['formatted_question'];
-$test_type;
+if(isset($_POST['formatted_question'])){
 
-if(isset($_POST['test-type'])){
-    $test_type = "Built-in";
-}else{
-    $test_type = "Custom";
-}
+    $currentUser = $_SESSION["user_ID"];
+    $test_name = $_POST['test-name'];
+    $formatted_text = $_POST['formatted_question'];
+    $test_type;
+    $chapter;
 
-//insert test
-$insert_test = mysqli_query($conn, 
-"INSERT INTO `tests`(
-    `test_staffAuthor`, 
-    `test_name`, 
-    `test_type`) 
-
-VALUES (
-    $currentUser,
-    '$test_name',
-    '$test_type')
-
-") or die(mysqli_error($conn));
-
-$test_ID = mysqli_query($conn, 
-"SELECT @lastID :=(LAST_INSERT_ID()) AS lastID
-") or die (mysqli_error($conn));
-
-$r_testID = mysqli_fetch_assoc($test_ID);
-
-if($insert_test){
-
-    for($i = 0; $i < count($formatted_text); $i++){
-
-        $text = mysqli_real_escape_string($conn, $formatted_text[$i]);
-        $id = $r_testID['lastID'];
-
-        $insert_question = mysqli_query($conn, 
-        "INSERT INTO `questions`(
-            `question_testID`, 
-            `question_formattedQuestion`) 
-         VALUES (
-            $id,
-            '$text')
-        
-        ") or die(mysqli_error($conn));
-
+    if(isset($_POST['test-type'])){
+        $test_type = "Built-in";
+        $chapter = $_POST['chapter'];
+    }else{
+        $test_type = "Custom";
+        $chapter = "";
+    }
+    
+    //insert test
+    $insert_test = mysqli_query($conn, 
+    "INSERT INTO `tests`(
+        `test_staffAuthor`, 
+        `test_name`, 
+        `test_type`,
+        `test_chapter`
+        ) 
+    
+    VALUES (
+        $currentUser,
+        '$test_name',
+        '$test_type',
+        '$chapter'
+        )
+    
+    ") or die(mysqli_error($conn));
+    
+    $test_ID = mysqli_query($conn, 
+    "SELECT @lastID :=(LAST_INSERT_ID()) AS lastID
+    ") or die (mysqli_error($conn));
+    
+    $r_testID = mysqli_fetch_assoc($test_ID);
+    
+    if($insert_test){
+    
+        for($i = 0; $i < count($formatted_text); $i++){
+    
+            $text = mysqli_real_escape_string($conn, $formatted_text[$i]);
+            $id = $r_testID['lastID'];
+    
+            $insert_question = mysqli_query($conn, 
+            "INSERT INTO `questions`(
+                `question_testID`, 
+                `question_formattedQuestion`) 
+             VALUES (
+                $id,
+                '$text')
+            
+            ") or die(mysqli_error($conn));
+    
+        }
+    
+        echo 
+        "<script>
+            alert('Test published successfully');
+            window.location.href='../dashboard.php';
+        </script>";
+    
     }
 
+}else{
     echo 
-    "<script>
-        alert('Test published successfully');
-        window.location.href='../dashboard.php';
-    </script>";
-
+        "<script>
+            alert('Test publication aborted! No questions to encode.');
+            window.location.href='../maketest.php?request=create';
+        </script>";
 }
 
 ?>

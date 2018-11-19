@@ -1,18 +1,3 @@
-<?php 
-
-/* ADMIN ONLY modules
-
-1. General student list
-2. General class list
-3. General Test list
-4. General staff list
-5. Staff registration
-
-*/
-
-?>
-
-
 <html>
     <header>
         <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -56,8 +41,14 @@
             ?>
                     
             <li class = "list-group-item active">Test Management</li>
-            <a class="list-group-item" href="maketest.php">Test List</a>
-            <a class="list-group-item" href="maketest.php?request=create">Make a Test</a>
+            
+            <?php
+            if($_SESSION['user_account_level'] == 1){
+                echo '<a class="list-group-item" href="test_list.php">Test List</a>';
+            }else{
+                echo '<a class="list-group-item" href="maketest.php?request=create">Make a Test</a>';
+            }
+            ?>
 
         </div>
     </div>

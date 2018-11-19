@@ -21,7 +21,7 @@ require 'php/auth-mods/auth-login.php';
         <div style = "margin-left: 0px;"><?php include ("widgets/navigation.php");?></div>
         <div><?php include ("widgets/logged_user.php");?></div>
         
-        <div style = "auto; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
+        <div style = "height: 700px; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
             <center><h1>STAFF ACCOUNTS</h1></center>
             <div class = "form-group">
                 <input class="form-control" id="txt_searchbox" type = "text" placeholder="Staff Name" name="txt_search" autofocus>

@@ -1,7 +1,15 @@
 <?php
 require 'mod_conn.php';
 
-if(isset($_POST['btn-testDelete'])){
+$redirect;
+
+if(isset($_POST['btn-test-delete'])){
+    $redirect = "test_list.php";
+}else{
+    $redirect = "dashboard.php";
+}
+
+if(isset($_POST['btn-testDelete']) || isset($_POST['btn-test-delete'])){
     
     if(isset($_POST['testsMark'])){
         $markedTest = $_POST['testsMark'];
@@ -24,13 +32,13 @@ if(isset($_POST['btn-testDelete'])){
         echo 
         "<script>
             alert('Marked tests successfully deleted!');
-            window.location.href='../dashboard.php';
+            window.location.href='../$redirect';
         </script>";
     }else{
         echo 
         "<script>
             alert('No test/s to delete.');
-            window.location.href='../dashboard.php';
+            window.location.href='../$redirect';
         </script>";
     }
 

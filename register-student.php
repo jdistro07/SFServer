@@ -2,6 +2,9 @@
 
 //initialize modules on start
 require 'php/auth-mods/auth-login.php';
+require ("php/mod_conn.php");
+
+$current_logged_user = $_SESSION["user_ID"];
 
 ?>
 
@@ -12,6 +15,7 @@ require 'php/auth-mods/auth-login.php';
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
         <script src="js/jquery.js"></script>
+        <script src = "js/functions.js"></script>
     </header>
 
     <body class="container-fluid fill-height">
@@ -20,42 +24,73 @@ require 'php/auth-mods/auth-login.php';
                 <h1>Student Registration</h1>
                 <br>
                 <form method = "post">
-                    <input required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
-                    <input name="mname" type="text" placeholder="Middle Name"/><br>
-                    <input required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    <input onkeyup = "textOnly(this)" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
+                    <input onkeyup = "textOnly(this)" name="mname" type="text" placeholder="Middle Name"/><br>
+                    <input onkeyup = "textOnly(this)" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
-                    <input style = "text-align: center;width:80%; margin: 0px; margin-top: 3px; margin-bottom: 3px; border-radius: 3px; border: 1px solid;" required = "required" id = "class_search" name = "classID" list = "result-class" placeholder="Class"/>
-                    <datalist id="result-class">
-                    </datalist>
+
+                    <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name = "classID">
+
+                        <option value = "">-- Select a class --</option>
+                        <?php
+
+                        $q_classes;
+
+                        /*
+
+                        1. Admin - display all classes
+                        2. Teacher - display classes where the account is registered in
+
+                        */
+                        if($_SESSION["user_account_level"] == 1){
+
+                            // admin contents
+                            $q_classes = mysqli_query(
+                                $conn,
+                                "SELECT * FROM class ORDER BY class_grade ASC
+                                "
+                            );
+
+                        }else{
+
+                            $q_classes = mysqli_query(
+                                $conn,
+                                "SELECT * FROM class 
+                                WHERE class_staff = $current_logged_user
+                                ORDER BY class_grade ASC
+                                "
+                            );
+
+                        }
+
+                        // loop per result
+                        while($r_classes = mysqli_fetch_assoc($q_classes)){
+                            echo 
+                            "<option value = '".$r_classes['class_ID']."'>
+                                Grade ".$r_classes['class_grade']." - ".$r_classes['class_section'].
+                            "</option>";
+                        }
+
+                        ?>
+
+                    </select>
+
                     <br>
 
-                    <input required = "required" name="username" type="text" placeholder="Username" value=""><br>
-                    <input required = "required" name="password" type="password" placeholder="Password"/><br>
+                    <input onkeyup = "usernameChars(this)" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    <input id = "password" required = "required" name="password" type="password" placeholder="Password"/><br>
+                    <input id = "confpassword" required = "required" name="confpassword" type="password" placeholder="Confirm Password"/><br>
 
-                    <input onclick = "return confirm('Approve registration?')" name="register" type="submit" value="Register"><br>
+                    <input onclick = "return regValidate('password', 'confpassword')" name="register" type="submit" value="Register"><br>
                 </form>
                 <a href="dashboard.php"><button>Cancel</button></a>
             </center>
         </div>
     </body>
-
-    <script>
-    $(document).ready(function(){
-        $('#class_search').keyup(function(){
-            var searchtext = $('#class_search').val();
-
-            $.get('php/minimod_class-search.php',{search:searchtext}, function(response){
-                $('#result-class').html(response);
-            });
-        });
-    })
-    </script>
 </html>
 
 <?php
-
-require ("php/mod_conn.php");
 
 //error messages
 $username_exist = "<script>alert(\"Username already exist\")</script>";
@@ -82,31 +117,39 @@ if(isset($_POST['register'])){
     }
 
     $query = mysqli_query($conn,
-"INSERT INTO `students`
-(
-    `student_fname`, 
-    `student_mname`, 
-    `student_lname`, 
-    `student_birthdate`, 
-    `student_address`, 
-    `student_classID`,  
-    `student_username`, 
-    `student_password`, 
-    `student_accountLevel`
-) 
-VALUES 
-(
-    \"$fname\",
-    \"$mname\",
-    \"$lname\",
-    \"$bdate\",
-    \"$address\",
-    \"$classID\",
-    \"$username\",
-    \"$enc_pass\",
-    \"$acc_level\"
-)
-") or die($username_exist);
+    "INSERT INTO `students`
+    (
+        `student_fname`, 
+        `student_mname`, 
+        `student_lname`, 
+        `student_birthdate`, 
+        `student_address`, 
+        `student_classID`,  
+        `student_username`, 
+        `student_password`, 
+        `student_accountLevel`
+    ) 
+    VALUES 
+    (
+        \"$fname\",
+        \"$mname\",
+        \"$lname\",
+        \"$bdate\",
+        \"$address\",
+        \"$classID\",
+        \"$username\",
+        \"$enc_pass\",
+        \"$acc_level\"
+    )
+    ") or die($username_exist);
+
+    if($query){
+        echo 
+        "<script>
+            alert('Student registered successfully!');
+            window.location.href='register-student.php';
+        </script>";
+    }
 }
 
 ?>

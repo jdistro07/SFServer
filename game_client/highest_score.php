@@ -75,4 +75,6 @@ $r_rating = mysqli_fetch_assoc($q_rating);
 
 echo "Rate_PostTest=".$r_rating['post']."|Rate_PreTest=".$r_rating['pre']."|TestPlayCount=".$r_perTest_playCount['testPlays'];
 
+mysqli_close($conn);
+
 ?>

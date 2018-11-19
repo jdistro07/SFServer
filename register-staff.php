@@ -11,6 +11,7 @@ require 'php/auth-mods/auth-login.php';
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
+        <script src = "js/functions.js"></script>
     </header>
 
     <body class="container-fluid fill-height">
@@ -19,22 +20,23 @@ require 'php/auth-mods/auth-login.php';
                 <h1>Staff Registration</h1>
                 <br>
                 <form method = "post">
-                    <input id = "fname" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>    
-                    <input name="mname" type="text" placeholder="Middle Name"/><br>
-                    <input required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    <input onkeyup = "textOnly(this)" id = "fname" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>    
+                    <input onkeyup = "textOnly(this)" name="mname" type="text" placeholder="Middle Name"/><br>
+                    <input onkeyup = "textOnly(this)" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
-                    <input required = "required" name="position" type="text" placeholder="Position"/><br>
+                    <input onkeyup = "textOnly(this)" required = "required" name="position" type="text" placeholder="Position"/><br>
                     <input required = "required" name="organization" type="text" placeholder="Organization"/><br>
-                    <input required = "required" name="username" type="text" placeholder="Username" value=""><br>
-                    <input required = "required" name="password" type="password" placeholder="Password"/><br>
+                    <input onkeyup = "usernameChars(this)" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    <input id = "password" required = "required" name="password" type="password" placeholder="Password"/><br>
+                    <input id = "confpassword" required = "required" name="confpassword" type="password" placeholder="Confirm Password"/><br>
                     
                     <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
                         <option value="1">Administrator</option>
                         <option value="2">Teacher</option>
                     </select><br>
                     
-                    <input name="register" type="submit" value="Register"><br>
+                    <input onclick = "return regValidate('password', 'confpassword')" name="register" type="submit" value="Register"><br>
 
                 </form>
                 <a href="dashboard.php"><button>Cancel</button></a>
@@ -73,33 +75,43 @@ if(isset($_POST['register'])){
     }
 
     $query = mysqli_query($conn,
-"INSERT INTO `staffs`
-(
-    `staff_fname`, 
-    `staff_mname`, 
-    `staff_lname`, 
-    `staff_birthdate`, 
-    `staff_address`, 
-    `staff_organization`, 
-    `staff_position`, 
-    `staff_username`, 
-    `staff_password`, 
-    `staff_accountLevel`
-) 
-VALUES 
-(
-    \"$fname\",
-    \"$mname\",
-    \"$lname\",
-    \"$bdate\",
-    \"$address\",
-    \"$organization\",
-    \"$position\",
-    \"$username\",
-    \"$enc_pass\",
-    \"$acc_level\"
-)
-") or die($username_exist);
+    "INSERT INTO `staffs`
+    (
+        `staff_fname`, 
+        `staff_mname`, 
+        `staff_lname`, 
+        `staff_birthdate`, 
+        `staff_address`, 
+        `staff_organization`, 
+        `staff_position`, 
+        `staff_username`, 
+        `staff_password`, 
+        `staff_accountLevel`
+    ) 
+    VALUES 
+    (
+        \"$fname\",
+        \"$mname\",
+        \"$lname\",
+        \"$bdate\",
+        \"$address\",
+        \"$organization\",
+        \"$position\",
+        \"$username\",
+        \"$enc_pass\",
+        \"$acc_level\"
+    )
+    ") or die($username_exist);
+
+    if($query){
+        echo 
+        "<script>
+            alert('Staff registered successfully!');
+            window.location.href='register-staff.php';
+        </script>";
+    }
 }
+
+
 
 ?>

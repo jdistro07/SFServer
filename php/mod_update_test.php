@@ -16,16 +16,19 @@ Process order:
 $testTitle = mysqli_real_escape_string($conn, $_POST['test-name']);
 $testID = $_POST['testID'];
 $testType;
+$chapter;
 
 if(isset($_POST['test-type']) == "built-in"){
     $testType = "Built-in";
+    $chapter = $_POST['chapter'];
 }else{
     $testType = "Custom";
+    $chapter = "";
 }
 
 mysqli_query($conn, 
 "UPDATE `tests` 
-SET `test_name` = '$testTitle',`test_type` = '$testType' 
+SET `test_name` = '$testTitle',`test_type` = '$testType', test_chapter = '$chapter'
 
 WHERE 
 test_ID = $testID
@@ -100,6 +103,35 @@ if(isset($_POST['questionID'])){
 
     }
 
+}else{
+
+    if(isset($_POST['formatted_question'])){
+
+        $formattedQuestion = $_POST['formatted_question'];
+
+        $i = 0;
+
+        do{
+            //insert the remaining questions
+            $q_current = $formattedQuestion[$i];
+            
+            mysqli_query($conn,
+            "INSERT INTO `questions`(
+                `question_testID`, 
+                `question_formattedQuestion`
+            ) 
+            VALUES (
+                $testID,
+                '$q_current'
+            )
+            ") or die(mysqli_error($conn));
+
+            $i++;
+            
+        }while($i < count($formattedQuestion));
+
+    }
+
 }
 
 // query for the owner ID
@@ -110,10 +142,22 @@ $q_owner = mysqli_query($conn,
 $r_owner = mysqli_fetch_assoc($q_owner);
 $owner = $r_owner['author'];
 
-echo 
-"<script>
-    alert('Test updated successfully');
-    window.location.href='../maketest.php?request=update&testID=$testID&owner=$owner';
-</script>";
+if(isset($_POST['formatted_question'])){
+
+    echo 
+    "<script>
+        alert('Test updated successfully!');
+        window.location.href='../maketest.php?request=update&testID=$testID&owner=$owner';
+    </script>";
+
+}else{
+
+    echo 
+    "<script>
+        alert('Test is now completely empty!');
+        window.location.href='../maketest.php?request=update&testID=$testID&owner=$owner';
+    </script>";
+    
+}
 
 ?>

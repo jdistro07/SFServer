@@ -21,7 +21,7 @@ require ("../php/mod_conn.php");
 
         $hashed_pass = $result["staff_password"];
 
-        $outputstring = "ID=".$result['staff_ID']."|Name=".$result['staff_fname']." ".$result['staff_mname']." ".$result['staff_lname']."|Position=".$result['staff_position']."|Username=".$result['staff_username']."|AccountLevel=".$result['staff_accountLevel'];
+        $outputstring = "ID=".$result['staff_ID']."|Name=".$result['staff_fname']." ".substr($result['staff_lname'], 0, 1).".|Position=".$result['staff_position']."|Username=".$result['staff_username']."|AccountLevel=".$result['staff_accountLevel'];
 
     }else if($result <= 0){ 
 
@@ -37,7 +37,7 @@ require ("../php/mod_conn.php");
         $result_student = mysqli_fetch_assoc($query_students);
         $hashed_pass = $result_student["student_password"];
 
-        $outputstring = "ID=".$result_student['student_ID']."|Name=".$result_student['student_fname']." ".$result_student['student_mname']." ".$result_student['student_lname']."|Username=".$result_student['student_username']."|AccountLevel=".$result_student['student_accountLevel']."|Class=".$result_student['class_grade']."".$result_student['class_section'];
+        $outputstring = "ID=".$result_student['student_ID']."|Name=".$result_student['student_fname']." ".substr($result_student['student_lname'], 0, 1).".|Username=".$result_student['student_username']."|AccountLevel=".$result_student['student_accountLevel']."|Class=".$result_student['class_grade']."".$result_student['class_section'];
 
 
 
@@ -45,11 +45,12 @@ require ("../php/mod_conn.php");
         echo("No query result");
     }
     
-
     //verify password
     if(password_verify($password,$hashed_pass)){
         echo "Login granted:".$outputstring;
     }else{
         echo "Login denied";
     }
+
+    mysqli_close($conn);
 ?>

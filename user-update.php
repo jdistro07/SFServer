@@ -7,6 +7,7 @@ require ("php/mod_conn.php");
 //get request values
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 $requestType = mysqli_real_escape_string($conn, $_GET['request']);
+$current_loggedUser = $_SESSION["user_ID"];
 
 // user-profile redirect extra references
 $user_type;
@@ -120,6 +121,7 @@ if($requestType == "staffupdate"){
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/register.css" rel="stylesheet" type="text/css"/>
         <script src="js/jquery.js"></script>
+        <script src="js/functions.js"></script>
     </header>
 
     <body class="container-fluid fill-height">
@@ -151,9 +153,9 @@ if($requestType == "staffupdate"){
                 <br>
                 <form method = "post">
 
-                    <input value = "<?php echo $q_fname; ?>" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
-                    <input value = "<?php echo $q_mname; ?>" name="mname" type="text" placeholder="Middle Name"/><br>
-                    <input value = "<?php echo $q_lname; ?>" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    <input onkeyup = "textOnly(this)" value = "<?php echo $q_fname; ?>" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
+                    <input onkeyup = "textOnly(this)" value = "<?php echo $q_mname; ?>" name="mname" type="text" placeholder="Middle Name"/><br>
+                    <input onkeyup = "textOnly(this)" value = "<?php echo $q_lname; ?>" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
                     <input value = "<?php echo $q_address; ?>" required = "required" name="address" type="text" placeholder="Address"/><br>
                     <input value = "<?php echo $q_birthdate; ?>" class="datePicker" required = "required" name="birthdate" type="date"/><br>
                     
@@ -170,18 +172,53 @@ if($requestType == "staffupdate"){
                         echo '<input value = "'.$q_position.'" required = "required" name="position" type="text" placeholder="Position"/><br>';
                         echo '<input value = "'.$q_organization.'" required = "required" name="organization" type="text" placeholder="Organization"/><br>';
                     }else if ($requestType == "studentupdate"){
-                        echo '
                         
-                        <input value = "'.$q_student_class.'" style = "text-align: center;width:80%; margin: 0px; margin-top: 3px; margin-bottom: 3px; border-radius: 3px; border: 1px solid;" required = "required" id = "class_search" name = "classID" list = "result-class" placeholder="Class"/>
+                        /*<input value = "'.$q_student_class.'" style = "text-align: center;width:80%; margin: 0px; margin-top: 3px; margin-bottom: 3px; border-radius: 3px; border: 1px solid;" required = "required" id = "class_search" name = "classID" list = "result-class" placeholder="Class"/>
                         <datalist id="result-class">
-                        </datalist>
+                        </datalist>*/
                         
-                        ';
+                        echo '<select name = "classID" style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;">';
+                            echo '<option value = "">-- Remove student from class --</option>';
+                            
+                            $q_registered_classes;
+
+                            if($_SESSION["user_account_level"] == 1){
+                                $q_registered_classes = mysqli_query(
+                                    $conn, 
+                                    
+                                    "SELECT * FROM class ORDER BY class_grade
+                                    "
+                                    ) 
+                                or die (mysqli_error($con));
+                            }else{
+                                $q_registered_classes = mysqli_query(
+                                    $conn, 
+                                    
+                                    "SELECT * FROM class WHERE class_staff = $current_loggedUser ORDER BY class_grade
+                                    "
+                                    ) 
+                                or die (mysqli_error($con));
+                            }
+
+                            while($r_registered_classes = mysqli_fetch_assoc($q_registered_classes)){
+
+                                $student_class = "";
+
+                                // select the current class
+                                if($r_registered_classes['class_ID'] == $q_student_class){
+                                    $student_class = "selected = \"selected\"";
+                                }
+
+                                echo "<option value = \"".$r_registered_classes['class_ID']."\" $student_class>Grade ".$r_registered_classes['class_grade']." - ".$r_registered_classes['class_section']."</option>";
+                            }
+
+                        echo '</select>';
                     }
                     ?>
 
-                    <input value = "<?php echo $q_username?>" required = "required" name="username" type="text" placeholder="Username" value=""><br>
-                    <input name="password" type="password" placeholder="Change Password"/><br>
+                    <input onkeyup = "usernameChars(this)" value = "<?php echo $q_username?>" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    <input id = "password" name="password" type="password" placeholder="Change password"/><br>
+                    <input id = "confpassword" name="confpassword" type="password" placeholder="Confirm password"/><br>
                     
                     <?php
                     /*
@@ -189,7 +226,7 @@ if($requestType == "staffupdate"){
                         select for account level
                     */
                     
-                    if( $requestType == "staffupdate"){
+                    if( $requestType == "staffupdate" && empty($_GET["accproperty"])){
                        if($q_account_level == 1){
                             echo('
                                 <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
@@ -210,7 +247,7 @@ if($requestType == "staffupdate"){
 
                     ?>
                     
-                    <input onclick = "return confirm('Update the selected user with these information?')" name="update" type="submit" value="Update"><br>
+                    <input onclick = "return updateValidate('password', 'confpassword')" name="update" type="submit" value="Update"><br>
 
                 </form>
                 <?php 
@@ -266,6 +303,8 @@ $pf_update_query;
 $redirect_location;
 
 if(isset($_POST['update'])){
+
+    $updated_username; // updated username
 
     //staff update
     if($requestType == "staffupdate"){
@@ -386,20 +425,20 @@ if(isset($_POST['update'])){
         //update PF Information
         $q_target_student = mysqli_query($conn, 
         "SELECT 
-        students.students_ID,
-        students.students_username AS username,
+        students.student_ID,
+        students.student_username AS username,
         COUNT(performance_data.pf_id)
         
-        FROM `performance_data` INNER JOIN students ON students.students_ID = performance_data.pf_userID
+        FROM `performance_data` INNER JOIN students ON students.student_ID = performance_data.pf_userID
         
-        WHERE students.students_ID = $id");
+        WHERE students.student_ID = $id");
 
         $r_target_student = mysqli_fetch_assoc($q_target_student);
 
         // update if the results is more than 0
         if($count_target_student = mysqli_num_rows($q_target_student) > 0){
 
-            $target_student_id = $r_target_student['staff_ID'];
+            $target_student_id = $r_target_student['student_ID'];
             $target_student_username = $r_target_student['username'];
 
             $update_student_pfdata = mysqli_query($conn, 
@@ -467,6 +506,7 @@ if(isset($_POST['update'])){
             
             ") or die(mysqli_error($conn));
         }
+
     }
 
     if(!$_GET['redirect'] == "userprofile"){

@@ -21,7 +21,7 @@ require 'php/auth-mods/auth-login.php';
         <div><?php include ("widgets/navigation.php");?></div>
         <div><?php include ("widgets/logged_user.php");?></div>
 
-        <div style = "auto; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
+        <div style = "height: 700px; margin: 0 auto;" class="col-lg-6 col-lg-offset-3" id="container">
             <center><h1>STUDENT ACCOUNTS</h1></center>
             <div class = "form-group">
                 <input class="form-control" id="txt_searchbox" type = "text" placeholder="Student Name" name="txt_search" autofocus>
@@ -30,7 +30,7 @@ require 'php/auth-mods/auth-login.php';
 
             <div>
                 <form action = "../php/mod_student-delete.php" method = "post">
-                    <input onclick = "return confirm('Deletion of the selected data is permanent acnd cannot be retrieved. Confirm deleting the selected records?')" id = "button" style = "margin-bottom: 5px; margin-top: -5px; width: 105px; height: 60px; white-space: normal" class = "btn btn-normal" type = "submit" name = "btn-delete" value = "Delete Record/s">
+                    <input onclick = "return confirm('Deletion of the selected data is permanent and cannot be retrieved. Confirm deleting the selected records?')" id = "button" style = "margin-bottom: 5px; margin-top: -5px; width: 105px; height: 60px; white-space: normal" class = "btn btn-normal" type = "submit" name = "btn-delete" value = "Delete Record/s">
                     
                     <div style = "max-height: 445px; overflow-y: auto;">
                         <table style = "border-color: black; border-width: 3px;" class = "table table-hover table-bordered table-sm">

@@ -14,6 +14,7 @@ $test_owner;
 $testName;
 $test_type;
 $current_testID;
+$current_test_chapter;
 
 if($req_type == "update"){
 
@@ -22,7 +23,7 @@ if($req_type == "update"){
     
     // fetch test credentials from the DB and set the test credential values
     $q_db_testCredentials = mysqli_query($conn, 
-    "SELECT test_ID, test_name as testName, test_type FROM tests WHERE tests.test_ID = $test_ID AND test_staffAuthor = $test_owner
+    "SELECT test_ID, test_name as testName, test_type, test_chapter FROM tests WHERE tests.test_ID = $test_ID AND test_staffAuthor = $test_owner
     ") or die (mysqli_error($conn));
 
     $r_db_testCredentials = mysqli_fetch_assoc($q_db_testCredentials);
@@ -30,6 +31,7 @@ if($req_type == "update"){
     $testName = $r_db_testCredentials['testName'];
     $testType = $r_db_testCredentials['test_type'];
     $current_testID = $r_db_testCredentials['test_ID'];
+    $current_test_chapter = $r_db_testCredentials['test_chapter'];
 
 }
 ?>
@@ -39,10 +41,10 @@ if($req_type == "update"){
 
         <title>Make Test</title>
         <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
-        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/global-style.css" rel="stylesheet" type="text/css"/>
         <link href="css/class-search.css" rel="stylesheet" type="text/css"/>
         <script src = "js/jquery.js"></script>
+        <script src = "js/functions.js"></script>
         
         <style>
             
@@ -77,9 +79,9 @@ if($req_type == "update"){
         <div><?php include 'widgets/logged_user.php';?></div>
 
         <!-- Main contnainer -->
-        <div style = "margin: 0 auto; height: 880px;" class="col-lg-6 col-lg-offset-3" id="container">
+        <div style = "margin: 0 auto; height: 1050px;" class="col-lg-6 col-lg-offset-3" id="container">
 
-            <center><h1>Make Test</h1></center>
+            <center><h1><?php if($req_type == "update"){echo "Update";}else{echo "Make";}?> Test</h1></center>
 
             <div>
                 <!--Form redirect-->
@@ -92,36 +94,19 @@ if($req_type == "update"){
                 ?>
                 <div class = "form-group">
 
-                    <input required class = "form-control" type = "text" name = "test-name" placeholder = "Test Name" <?php if($req_type == "update"){echo "value = \"".$testName."\"";}?>>
+                    <input onkeyup = "textOnly(this)" required class = "form-control" type = "text" name = "test-name" placeholder = "Test Name" <?php if($req_type == "update"){echo "value = \"".$testName."\"";}?>>
                     
                     <div class="input-group mb-3">
-                        <input id = "question_count_value" type="text" class="form-control" placeholder="Question item count" aria-label="Question item count" aria-describedby="basic-addon2">
+                        <input onkeyup = "numericOnly(this)" id = "question_count_value" type="text" class="form-control" placeholder="Question item count" aria-label="Question item count" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button id = "question_create_count" class="btn btn-outline-secondary" type="button">Create</button>
+                            <button id = "question_create_count" class="btn btn-warning" type="button">Create</button>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" name = "test-type" type="checkbox" value="built-in" id="invalidCheck2" 
-
-                            <?php 
-                            if($req_type == "update"){
-                                if($testType == "Built-in"){
-                                    echo "checked";
-                                }
-                            }?>> <!-- <== DO NOT REMOVE THIS CLOSING ANGLED BRACKET -->
-
-                            <label class="form-check-label" for="invalidCheck2">Built-in test</label>
-                        </div>
-                    </div>
-
-                    <button id = "btnPublish" class="<?php if($req_type == "update"){echo "btn btn-warning";}else{echo "btn btn-primary";}?>" type="submit"><?php if($req_type == "update"){echo "Update";}else{echo "Publish";}?></button>
 
                 </div>
 
                 <!--Test question items goes here-->
-                <div  id = "question_container">
+                <div id = "question_container">
                     <?php
                     // query each test question items if request type is update
                     if($req_type == "update"){
@@ -133,6 +118,8 @@ if($req_type == "update"){
                         while($r_questionItems = mysqli_fetch_assoc($q_questionItems)){
 
                             $questionValues = explode(":", $r_questionItems['question_formattedQuestion']);
+
+                            //print_r($questionValues);
                             
                             if($questionValues[1] == "mc"){
                                 dbQuestion_panels($r_questionItems['question_id'], $questionValues[1], $questionValues[2], $questionValues[6], array(substr($questionValues[3],2),substr($questionValues[4],2), substr($questionValues[5],2)));
@@ -149,6 +136,60 @@ if($req_type == "update"){
                 <div hidden id = "formatted_question"><!--Formatted questions goes here--></div>
                 <div hidden id = "questionID"><!--Question IDs goes here--></div>
                 <input hidden name = "testID" value = "<?php echo $test_ID;?>">
+
+                <!--Update test-->
+                <h4><?php if($req_type == "update"){echo "Update Test";}else{echo "Publish Test";}?></h4>
+                <hr style = "margin: 10px;">
+
+                <div id  = "test_options" class="form-group">
+                    <div class="form-check">
+
+                        <?php
+                        if($_SESSION['user_account_level'] == 1){
+
+                            $test_state;
+
+                            if($req_type == "update"){
+                                if($testType == "Built-in"){
+                                    $test_state = "checked";
+                                    echo '<input class="form-check-input" onclick = "marked_builtin(this)" name = "test-type" type="checkbox" value="built-in" id="invalidCheck2" '.$test_state.'>';
+                                }else{
+                                    echo '<input class="form-check-input" onclick = "marked_builtin(this)" name = "test-type" type="checkbox" value="built-in" id="invalidCheck2">';
+                                }
+
+                                echo '
+                                <label class="form-check-label" for="invalidCheck2">Built-in test</label>
+                                ';
+                            }else{
+                                echo '<input class="form-check-input" onclick = "marked_builtin(this)" name = "test-type" type="checkbox" value="built-in" id="invalidCheck2">';
+                                echo '
+                                <label class="form-check-label" for="invalidCheck2">Built-in test</label>
+                                ';
+                            }
+
+                        }
+                        ?>
+
+                        <div id = "test_options">
+                        <?php
+                        if($req_type == "update" && $testType == "Built-in"){
+                            echo '<input onkeyup = "numericOnly(this)" name = "chapter" style = "text-align: center;" required type="text" class="form-control" placeholder="Chapter no." aria-label="Chapter no." aria-describedby="basic-addon2" value = "'.$current_test_chapter.'">';
+                        }
+                        ?>
+                        </div>
+
+                    </div>
+
+                    <!--<div id = "upload_video">
+                        <hr>
+                        <h4>Select a video lesson</h4>
+                        <hr>
+                        <input type = "file" accept = ".mp4, .dv, .m4v, .mov, .mp4, .mpg, .mpeg, .ogv, .vp8, .webm, .wmv" name = "video_file">
+                    </div>-->
+
+                </div>
+
+                <center><button style = "width: 100%;" id = "btnPublish" class="<?php if($req_type == "update"){echo "btn btn-warning";}else{echo "btn btn-primary";}?>" type="submit"><?php if($req_type == "update"){echo "Update";}else{echo "Publish";}?></button></center>
             </form>
             </div>
         </div>
@@ -178,17 +219,17 @@ if($req_type == "update"){
             // question values concatinated
             $txt_questionValues = 
             '<div id = "mc_value" class="col">'.
-            '<input required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[0])).'" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'.
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[0])).'" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'.
             '</div>';
 
             $txt_questionValues .=
             '<div id = "mc_value" class="col">'.
-            '<input required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[1])).'" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'.
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[1])).'" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'.
             '</div>';
 
             $txt_questionValues .= 
             '<div id = "mc_value" class="col">'.
-            '<input required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[2])).'" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'.
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" value = "'.trim(htmlspecialchars($mcValues[2])).'" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'.
             '</div>';
 
             //set answer values default the answers from the current test
@@ -277,7 +318,7 @@ if($req_type == "update"){
         '<div class="input-group-prepend">'.
         '<span class="input-group-text" id="basic-addon3">Question</span>'.
         '</div>'.
-        '<input required type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3" value = "'.$questionText.'">'.
+        '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3" value = "'.trim(htmlspecialchars($questionText)).'">'.
         '<input hidden required type="text" name = "questionID[]" class="form-control" id="txt_ID" aria-describedby="basic-addon3" value = "'.$question_ID.'">'.
         '</div>'.
         '<div id = "questionValue" class="form-row">'.$txt_questionValues.'</div>'.
@@ -303,7 +344,7 @@ if($req_type == "update"){
 
             '<span class = "badge badge-secondary">Question Type</span>'+
             '<select required onchange = "question_values(this.value, this)" style = "width: 200px;" id = "test-type" class = "form-control">'+
-            '<option value = "not-set" disabled selected>Question Type</option>'+
+            '<option value = "" disabled selected>Question Type</option>'+
             '<option value = "mc">Multiple choice</option>'+
             '<option value = "tf">True or False</option>'+
             '</select>'+
@@ -312,26 +353,62 @@ if($req_type == "update"){
             '<div class="input-group-prepend">'+
             '<span class="input-group-text" id="basic-addon3">Question</span>'+
             '</div>'+
-            '<input required type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3">'+
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" id="txt_question" aria-describedby="basic-addon3">'+
             '</div>'+
             '<div id = "questionValue" class="form-row"></div>'+
             '<div id = "questionAnswer"></div>'
             '</div>';
-            
+
             $('#question_create_count').click('load', function(){
                 
                 var questioncount = $('#question_count_value').val();
+                var questionItemCount = $('#question_container').children().length;
+
+                var totalquestions = questionItemCount + parseInt(questioncount);
                 
-                for(var i = 0; i < questioncount; i++){
-                    
-                    $('#question_container').append(element);
-                    
+                if(totalquestions <= 100){
+                    for(var i = 0; i < questioncount; i++){
+                        $('#question_container').append(element);
+                    }
+                }else if(questioncount == ""){
+                    alert("Please fill in the desired number of question items.");
+                }else{
+
+                    var remaining = 100 - questionItemCount;
+                    alert("Maximum test question item count is limited to 100! You can only add "+remaining+" question/s left.");
                 }
+
+                console.log(questionItemCount);
                 
             });
             
         });
-        
+
+        // wip
+        function marked_builtin(ele){
+
+            var confirmation;
+            var txtbox_chapter = '<input onkeyup = "numericOnly(this)" name = "chapter" style = "text-align: center;" required type="text" class="form-control" placeholder="Chapter no." aria-label="Chapter no." aria-describedby="basic-addon2">'
+
+            if($(ele).prop('checked') == true){
+
+                confirmation = confirm("Make this test built-in inside the game?");
+
+                if(!confirmation){
+                    $(ele).prop('checked', false);
+                    $(ele).parent().children('#test_options').children().remove();
+                }else{
+                    $(ele).parent().children('#test_options').append(txtbox_chapter);
+                }
+
+            }else{
+                // remove or set elements to hidden
+                $(ele).parent().children('#test_options').children().remove();
+            }
+
+        }
+
+        // test item delete marker
         function markDelete_handler(ele){
 
             var confirmation;
@@ -380,17 +457,17 @@ if($req_type == "update"){
             
             var mc_a = 
             '<div id = "mc_value" class="col">'+
-            '<input required type="text" class="form-control" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'+
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" name = "choice_a" placeholder="Choice value for A" style = "text-align: center">'+
             '</div>';
 
             var mc_b = 
             '<div id = "mc_value" class="col">'+
-            '<input required type="text" class="form-control" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'+
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" name = "choice_b" placeholder="Choice value for B" style = "text-align: center">'+
             '</div>';
 
             var mc_c = 
             '<div id = "mc_value" class="col">'+
-            '<input required type="text" class="form-control" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'+
+            '<input onkeyup = "makeTestCharFilter(this)" required type="text" class="form-control" name = "choice_c" placeholder="Choice value for C" style = "text-align: center">'+
             '</div>';
             
             var tf_answer =
@@ -423,76 +500,85 @@ if($req_type == "update"){
         
         $('#btnPublish').on('click', function(){
 
-            // clean up
-            $(this).parent().parent().find('#formatted_question').children('input').remove();
+            var questionItemCount = $('#question_container').children('#question_item').length;
 
-            var confirmation = confirm("Confirm publication?");
-            
-            var question_number = 0;
-            var formattedText;
-   
-            if(confirmation){
+            if(questionItemCount > 0){
 
-                // store ID of marked questions into q_IDs array and send the array to mod_update.php
-                var q_IDs = [];
+                // clean up
+                $(this).parent().parent().find('#formatted_question').children('input').remove();
 
-                $('#question_container').children('#question_item').find('#deleteMark').map(function(){
+                var confirmation = confirm("Confirm publication?");
 
-                    if($(this).prop('checked') == true){
-                        q_IDs.push($(this).val()); // push/add IDs into the array
+                var question_number = 0;
+                var formattedText;
+
+                if(confirmation){
+
+                    // store ID of marked questions into q_IDs array and send the array to mod_update.php
+                    var q_IDs = [];
+
+                    $('#question_container').children('#question_item').find('#deleteMark').map(function(){
+
+                        if($(this).prop('checked') == true){
+                            q_IDs.push($(this).val()); // push/add IDs into the array
+                        }
+
+                    });
+
+                    for(let i = 0; i < q_IDs.length; i++){
+                        $(this).parent().parent().find('#questionID').append('<input type = "text" name = "markedQuestions[]" value = "'+q_IDs[i]+'">');
                     }
+                    
+                    // loop through each question item and parse the values for insert
+                    $('#question_container').children('#question_item').each(function (q_index){
 
-                });
+                        // delete marked panels
+                        var deleteMarker = $(this).find('#deleteMark').prop('checked');
+                        
+                        if(deleteMarker){
+                            $(this).find('#deleteMark').parent().remove();
+                        }
 
-                for(let i = 0; i < q_IDs.length; i++){
-                    $(this).parent().parent().find('#questionID').append('<input type = "text" name = "markedQuestions[]" value = "'+q_IDs[i]+'">');
+                        // set and parse question values
+                        var test_mode = $(this).find('#test-type').val();
+                        var question = $(this).find('#txt_question').val();
+                        var question_answer = $(this).find('#questionAnswer').children('#q_answer').val();
+
+                        //choices
+                        var choices;
+
+                        if(test_mode == "mc"){
+
+                            choices = $(this).children('#questionValue').find('input[name ^= "choice"]').map(function(index, elem){
+
+                                var letter = String.fromCharCode(64 + (index+1));
+                                return letter+". "+$(this).val();
+
+                            }).get().join(':');
+
+                        }else{
+
+                            choices = "True:False"
+
+                        }
+                        console.log(choices);
+
+                        formattedText = q_index+":"+test_mode+":"+question+":"+choices+":"+question_answer;
+                        $(this).parent().parent().find('#formatted_question').append('<input type = "text" name = "formatted_question[]" value = "'+htmlspecialchars(formattedText)+'">');
+
+                    });
+                    
+                }else{
+                    return false;
                 }
                 
-                // loop through each question item and parse the values for insert
-                $('#question_container').children('#question_item').each(function (q_index){
-
-                    // delete marked panels
-                    var deleteMarker = $(this).find('#deleteMark').prop('checked');
-                    
-                    if(deleteMarker){
-                        $(this).find('#deleteMark').parent().remove();
-                    }
-
-                    // set and parse question values
-                    var test_mode = $(this).find('#test-type').val();
-                    var question = $(this).find('#txt_question').val();
-                    var question_answer = $(this).find('#questionAnswer').children('#q_answer').val();
-
-                    //choices
-                    var choices;
-
-                    if(test_mode == "mc"){
-
-                        choices = $(this).children('#questionValue').find('input[name ^= "choice"]').map(function(index, elem){
-
-                            var letter = String.fromCharCode(64 + (index+1));
-                            return letter+". "+$(this).val();
-
-                        }).get().join(':');
-
-                    }else{
-
-                        choices = "True:False"
-
-                    }
-                    console.log(choices);
-
-                    formattedText = q_index+":"+test_mode+":"+question+":"+choices+":"+question_answer;
-                    $(this).parent().parent().find('#formatted_question').append('<input type = "text" name = "formatted_question[]" value = "'+htmlspecialchars(formattedText)+'">');
-
-                });
-                
             }else{
-                
-                return false;
-                
-            }
 
+                alert("You must make at least 1 question for this test!");
+                return false;
+
+            }
+            
             function htmlspecialchars(str) {
                 if (typeof(str) == "string") {
                     str = str.replace(/&/g, "&amp;"); /* must do &amp; first */
