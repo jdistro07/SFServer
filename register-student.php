@@ -24,12 +24,22 @@ $current_logged_user = $_SESSION["user_ID"];
                 <h1>Student Registration</h1>
                 <br>
                 <form method = "post">
+                    <h6 align = "left" id = "elementLabel"><span><strong>First Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Middle Name</strong> <i>(optional)</i></span></h6>
                     <input onkeyup = "textOnly(this)" name="mname" type="text" placeholder="Middle Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Last Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Address</strong></span></h6>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Birth Date</strong></span></h6>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Enroll to Class</strong></span></h6>
                     <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name = "classID">
 
                         <option value = "">-- Select a class --</option>
@@ -78,10 +88,16 @@ $current_logged_user = $_SESSION["user_ID"];
 
                     <br>
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Username</strong> <i>(must be unique)</i></span></h6>
                     <input onkeyup = "usernameChars(this)" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Password</strong></span></h6>
                     <input id = "password" required = "required" name="password" type="password" placeholder="Password"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Confirm Password</strong></span></h6>
                     <input id = "confpassword" required = "required" name="confpassword" type="password" placeholder="Confirm Password"/><br>
 
+                    <hr>
                     <input onclick = "return regValidate('password', 'confpassword')" name="register" type="submit" value="Register"><br>
                 </form>
                 <a href="dashboard.php"><button>Cancel</button></a>

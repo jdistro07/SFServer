@@ -24,9 +24,11 @@ require 'php/auth-mods/auth-login.php';
                     <!--<input id = "staff" required = "required" name="classStaff" type="text" placeholder="Class Staff" list = "result-staffs" autofocus/><br>
                     <datalist id="result-staffs"></datalist>-->
 
-                    <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name="classStaff">
+                    <h6 align = "left" id = "elementLabel"><span><strong>Assign a Teacher</strong></span></h6>
+                    <select style = "margin-top: 2px; text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name="classStaff">
                     
                     <option value = "">-- Assign a Teacher --</option>
+                    
 
                     <?php
 
@@ -56,9 +58,14 @@ require 'php/auth-mods/auth-login.php';
                     ?>
                     </select>
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Class Grade</strong></span></h6>
                     <input onkeyup = "numericOnly(this)" required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
+                    
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Class Section</strong></span></h6>
                     <input onkeyup = "textOnly(this)" required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
 
+                    <hr>
                     <input onclick = "return confirm('Approve registration?')" name="register" type="submit" value="Register Class"><br>
                 </form>
                 <a href="dashboard.php"><button>Cancel</button></a>

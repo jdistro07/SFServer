@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2018 at 01:30 PM
+-- Generation Time: Jan 02, 2019 at 08:14 AM
 -- Server version: 10.1.32-MariaDB
 -- PHP Version: 5.6.36
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `class` (
-  `class_ID` int(11) NOT NULL,
-  `class_staff` int(11) NOT NULL,
-  `class_grade` int(2) NOT NULL,
+  `class_ID` int(11) NOT NULL COMMENT 'Unique ID of the class',
+  `class_staff` int(11) NOT NULL COMMENT 'Class teacher',
+  `class_grade` int(2) NOT NULL COMMENT 'Grade level of the class',
   `class_section` char(3) NOT NULL COMMENT 'Class section per grade'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Collection of classes of the school';
 
@@ -48,7 +48,7 @@ CREATE TABLE `performance_data` (
   `pf_testID` int(11) NOT NULL COMMENT 'ID of the course.',
   `pf_testMode` tinytext NOT NULL COMMENT 'Contians pre-test and post-test modes achieved by the user',
   `pf_rating` decimal(10,2) NOT NULL COMMENT 'Student rating to the course.',
-  `pf_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `pf_timestamp` datetime DEFAULT NULL COMMENT 'Time and date of test performance submission'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Performance data of each users that finishes the game.';
 
 -- --------------------------------------------------------
@@ -60,7 +60,7 @@ CREATE TABLE `performance_data` (
 CREATE TABLE `questions` (
   `question_id` int(11) NOT NULL COMMENT 'ID of each question',
   `question_testID` int(11) NOT NULL COMMENT 'ID of the test where the question/s belong to',
-  `question_formattedQuestion` varchar(255) NOT NULL COMMENT 'Formatted question text for the client'
+  `question_formattedQuestion` text NOT NULL COMMENT 'Formatted question text for the client'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Entry of questions for reference table tests';
 
 -- --------------------------------------------------------
@@ -70,17 +70,17 @@ CREATE TABLE `questions` (
 --
 
 CREATE TABLE `staffs` (
-  `staff_ID` int(11) NOT NULL,
-  `staff_fname` varchar(50) NOT NULL,
-  `staff_mname` varchar(20) NOT NULL,
-  `staff_lname` varchar(80) NOT NULL,
-  `staff_birthdate` date NOT NULL,
-  `staff_address` varchar(150) NOT NULL,
-  `staff_organization` varchar(150) NOT NULL,
-  `staff_position` varchar(30) NOT NULL,
+  `staff_ID` int(11) NOT NULL COMMENT 'Unque Staff account ID',
+  `staff_fname` varchar(50) NOT NULL COMMENT 'First name of the staff',
+  `staff_mname` varchar(20) NOT NULL COMMENT 'Middle name of the staff',
+  `staff_lname` varchar(80) NOT NULL COMMENT 'Last name of the staff',
+  `staff_birthdate` date NOT NULL COMMENT 'Date of birth of the staff',
+  `staff_address` varchar(150) NOT NULL COMMENT 'Address of the staff',
+  `staff_organization` varchar(150) NOT NULL COMMENT 'Organization of the staff',
+  `staff_position` varchar(30) NOT NULL COMMENT 'Staff position inside the current organization',
   `staff_username` varchar(30) NOT NULL COMMENT 'Unique user names',
-  `staff_password` char(60) NOT NULL,
-  `staff_accountLevel` int(1) NOT NULL
+  `staff_password` char(60) NOT NULL COMMENT 'Encrypted account password',
+  `staff_accountLevel` int(1) NOT NULL COMMENT 'Account level that consist 2 levels (Admin & Teacher)'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
 
 -- --------------------------------------------------------
@@ -90,16 +90,16 @@ CREATE TABLE `staffs` (
 --
 
 CREATE TABLE `students` (
-  `student_ID` int(11) NOT NULL,
-  `student_fname` varchar(50) NOT NULL,
-  `student_mname` varchar(20) NOT NULL,
-  `student_lname` varchar(80) NOT NULL,
-  `student_birthdate` date NOT NULL,
-  `student_address` varchar(150) NOT NULL,
-  `student_classID` int(11) NOT NULL,
-  `student_username` varchar(30) NOT NULL,
-  `student_password` char(60) NOT NULL,
-  `student_accountLevel` int(1) NOT NULL
+  `student_ID` int(11) NOT NULL COMMENT 'Account unique ID',
+  `student_fname` varchar(50) NOT NULL COMMENT 'First name of the student',
+  `student_mname` varchar(20) NOT NULL COMMENT 'Middle name of the student',
+  `student_lname` varchar(80) NOT NULL COMMENT 'Last name of the student',
+  `student_birthdate` date NOT NULL COMMENT 'Date of birth of the student',
+  `student_address` varchar(150) NOT NULL COMMENT 'Address of the student',
+  `student_classID` text COMMENT 'Current class of the student',
+  `student_username` varchar(30) NOT NULL COMMENT 'Account username',
+  `student_password` char(60) NOT NULL COMMENT 'Encrypted account password',
+  `student_accountLevel` int(1) NOT NULL COMMENT 'Student account level (3)'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Registered students';
 
 -- --------------------------------------------------------
@@ -112,7 +112,9 @@ CREATE TABLE `tests` (
   `test_ID` int(11) NOT NULL COMMENT 'Test entry ID',
   `test_staffAuthor` int(11) NOT NULL COMMENT 'Author of the Test',
   `test_name` text NOT NULL COMMENT 'Name of the test',
-  `test_type` tinytext NOT NULL COMMENT 'Type of test (Post-test, Pre-test)'
+  `test_type` tinytext NOT NULL COMMENT 'Type of test (Post-test, Pre-test)',
+  `test_chapter` tinytext NOT NULL COMMENT 'Chapter of the current &quot;Built-in&quot; test.',
+  `test_visibility` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Custom test visibility state'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Entry of pre-tests and post-tests';
 
 --
@@ -165,37 +167,37 @@ ALTER TABLE `tests`
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `class_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3966;
+  MODIFY `class_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of the class', AUTO_INCREMENT=3979;
 
 --
 -- AUTO_INCREMENT for table `performance_data`
 --
 ALTER TABLE `performance_data`
-  MODIFY `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Student performance entry ID', AUTO_INCREMENT=16;
+  MODIFY `pf_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Student performance entry ID', AUTO_INCREMENT=513;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of each question', AUTO_INCREMENT=750;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of each question', AUTO_INCREMENT=890;
 
 --
 -- AUTO_INCREMENT for table `staffs`
 --
 ALTER TABLE `staffs`
-  MODIFY `staff_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2003;
+  MODIFY `staff_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unque Staff account ID', AUTO_INCREMENT=2024;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `student_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1056;
+  MODIFY `student_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Account unique ID', AUTO_INCREMENT=1079;
 
 --
 -- AUTO_INCREMENT for table `tests`
 --
 ALTER TABLE `tests`
-  MODIFY `test_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Test entry ID', AUTO_INCREMENT=27;
+  MODIFY `test_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Test entry ID', AUTO_INCREMENT=51;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

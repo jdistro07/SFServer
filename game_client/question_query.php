@@ -22,24 +22,19 @@ $q_test =  mysqli_query($conn,
 "SELECT 
 
 tests.test_ID,
-
-staffs.staff_fname,
-staffs.staff_mname,
-staffs.staff_lname,
-
 tests.test_name,
 tests.test_type
 
-FROM `tests` INNER JOIN `staffs`
+FROM `tests`
 
-WHERE tests.test_ID = $test_id_request AND staffs.staff_ID = tests.test_staffAuthor
+WHERE tests.test_ID = $test_id_request
 
 ") or die (mysql_error($conn));
 
 $r_test = mysqli_fetch_assoc($q_test);
 
 //display information
-echo "Information(Author:".$r_test['staff_lname'].", ".$r_test['staff_fname']." ".$r_test['staff_mname']."|TestID=".$r_test['test_ID']."|TestName=".$r_test['test_name']."|TestType=".$r_test['test_type'].")<ed>";
+echo "Information(TestName=".$r_test['test_name']."|TestType=".$r_test['test_type'].")<ed>";
 
 //3. Query the questions associated with the test
 $current_test_id = $r_test['test_ID'];

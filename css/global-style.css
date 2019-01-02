@@ -6,3 +6,14 @@ input[type = text], input[type=password], .datePicker{
     border-radius: 3px;
     border: 1px solid;
 }
+
+#elementLabel{
+    font-size: 12pt;
+    margin-top: 10px;
+    margin-bottom: 0pt;
+    margin-left: 50pt;
+}
+
+#elementLabel > span{
+    font-size: 12.5pt;
+}

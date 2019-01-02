@@ -34,6 +34,7 @@ $class_query_result = mysqli_fetch_assoc($class_entry);
                 <br>
                 <form method = "post">
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Teacher Assigned</strong></span></h6>
                     <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" required = "required" name="classStaff">
                     
                     <?php
@@ -68,8 +69,13 @@ $class_query_result = mysqli_fetch_assoc($class_entry);
                     
                     </select>
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Class Grade</strong></span></h6>
                     <input onkeyup = "numericOnly(this)" value = "<?php echo $class_query_result['class_grade']; ?>" required = "required" name="classGrade" type="text" placeholder="Class Grade"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Class Section</strong></span></h6>
                     <input onkeyup = "textOnly(this)" value = "<?php echo $class_query_result['class_section']; ?>" required = "required" name="classSection" type="text" placeholder="Class Section"/><br>
+
+                    <hr>
 
                     <input onclick = "return confirm('Confirm updating the selected class?')" name="register" type="submit" value="Update Class Information"><br>
                 </form>

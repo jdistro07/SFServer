@@ -39,6 +39,7 @@ require 'php/auth-mods/auth-login.php';
                                 <tr>
                                     <th style = "vertical-align: middle; text-align: center">Staff ID</th>
                                     <th style = "vertical-align: middle; text-align: center">Staff Name</th>
+                                    <th style = "vertical-align: middle; text-align: center">Access Level</th>
                                     <th style = "vertical-align: middle; text-align: center">Menu</th>
                                 </tr>
                             </thead>

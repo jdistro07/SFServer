@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Host: 127.0.0.1
-- Generation Time: Oct 05, 2018 at 01:36 PM
+- Generation Time: Jan 02, 2019 at 08:15 AM
 - Server version: 10.1.32-MariaDB
 - PHP Version: 5.6.36
 -->
@@ -18,12 +18,12 @@
         <pma:database name="db_scriptforte" collation="latin1_swedish_ci" charset="latin1">
             <pma:table name="class">
                 CREATE TABLE `class` (
-                  `class_ID` int(11) NOT NULL AUTO_INCREMENT,
-                  `class_staff` int(11) NOT NULL,
-                  `class_grade` int(2) NOT NULL,
+                  `class_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of the class',
+                  `class_staff` int(11) NOT NULL COMMENT 'Class teacher',
+                  `class_grade` int(2) NOT NULL COMMENT 'Grade level of the class',
                   `class_section` char(3) NOT NULL COMMENT 'Class section per grade',
                   PRIMARY KEY (`class_ID`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=3966 DEFAULT CHARSET=latin1 COMMENT='Collection of classes of the school';
+                ) ENGINE=InnoDB AUTO_INCREMENT=3979 DEFAULT CHARSET=latin1 COMMENT='Collection of classes of the school';
             </pma:table>
             <pma:table name="performance_data">
                 CREATE TABLE `performance_data` (
@@ -33,50 +33,50 @@
                   `pf_testID` int(11) NOT NULL COMMENT 'ID of the course.',
                   `pf_testMode` tinytext NOT NULL COMMENT 'Contians pre-test and post-test modes achieved by the user',
                   `pf_rating` decimal(10,2) NOT NULL COMMENT 'Student rating to the course.',
-                  `pf_timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  `pf_timestamp` datetime DEFAULT NULL COMMENT 'Time and date of test performance submission',
                   PRIMARY KEY (`pf_id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 COMMENT='Performance data of each users that finishes the game.';
+                ) ENGINE=InnoDB AUTO_INCREMENT=513 DEFAULT CHARSET=latin1 COMMENT='Performance data of each users that finishes the game.';
             </pma:table>
             <pma:table name="questions">
                 CREATE TABLE `questions` (
                   `question_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID of each question',
                   `question_testID` int(11) NOT NULL COMMENT 'ID of the test where the question/s belong to',
-                  `question_formattedQuestion` varchar(255) NOT NULL COMMENT 'Formatted question text for the client',
+                  `question_formattedQuestion` text NOT NULL COMMENT 'Formatted question text for the client',
                   PRIMARY KEY (`question_id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=750 DEFAULT CHARSET=latin1 COMMENT='Entry of questions for reference table tests';
+                ) ENGINE=InnoDB AUTO_INCREMENT=890 DEFAULT CHARSET=latin1 COMMENT='Entry of questions for reference table tests';
             </pma:table>
             <pma:table name="staffs">
                 CREATE TABLE `staffs` (
-                  `staff_ID` int(11) NOT NULL AUTO_INCREMENT,
-                  `staff_fname` varchar(50) NOT NULL,
-                  `staff_mname` varchar(20) NOT NULL,
-                  `staff_lname` varchar(80) NOT NULL,
-                  `staff_birthdate` date NOT NULL,
-                  `staff_address` varchar(150) NOT NULL,
-                  `staff_organization` varchar(150) NOT NULL,
-                  `staff_position` varchar(30) NOT NULL,
+                  `staff_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unque Staff account ID',
+                  `staff_fname` varchar(50) NOT NULL COMMENT 'First name of the staff',
+                  `staff_mname` varchar(20) NOT NULL COMMENT 'Middle name of the staff',
+                  `staff_lname` varchar(80) NOT NULL COMMENT 'Last name of the staff',
+                  `staff_birthdate` date NOT NULL COMMENT 'Date of birth of the staff',
+                  `staff_address` varchar(150) NOT NULL COMMENT 'Address of the staff',
+                  `staff_organization` varchar(150) NOT NULL COMMENT 'Organization of the staff',
+                  `staff_position` varchar(30) NOT NULL COMMENT 'Staff position inside the current organization',
                   `staff_username` varchar(30) NOT NULL COMMENT 'Unique user names',
-                  `staff_password` char(60) NOT NULL,
-                  `staff_accountLevel` int(1) NOT NULL,
+                  `staff_password` char(60) NOT NULL COMMENT 'Encrypted account password',
+                  `staff_accountLevel` int(1) NOT NULL COMMENT 'Account level that consist 2 levels (Admin &amp; Teacher)',
                   PRIMARY KEY (`staff_ID`),
                   UNIQUE KEY `staff_username` (`staff_username`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=2003 DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
+                ) ENGINE=InnoDB AUTO_INCREMENT=2024 DEFAULT CHARSET=latin1 COMMENT='Composed of school''s staffs and teachers';
             </pma:table>
             <pma:table name="students">
                 CREATE TABLE `students` (
-                  `student_ID` int(11) NOT NULL AUTO_INCREMENT,
-                  `student_fname` varchar(50) NOT NULL,
-                  `student_mname` varchar(20) NOT NULL,
-                  `student_lname` varchar(80) NOT NULL,
-                  `student_birthdate` date NOT NULL,
-                  `student_address` varchar(150) NOT NULL,
-                  `student_classID` int(11) NOT NULL,
-                  `student_username` varchar(30) NOT NULL,
-                  `student_password` char(60) NOT NULL,
-                  `student_accountLevel` int(1) NOT NULL,
+                  `student_ID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Account unique ID',
+                  `student_fname` varchar(50) NOT NULL COMMENT 'First name of the student',
+                  `student_mname` varchar(20) NOT NULL COMMENT 'Middle name of the student',
+                  `student_lname` varchar(80) NOT NULL COMMENT 'Last name of the student',
+                  `student_birthdate` date NOT NULL COMMENT 'Date of birth of the student',
+                  `student_address` varchar(150) NOT NULL COMMENT 'Address of the student',
+                  `student_classID` text COMMENT 'Current class of the student',
+                  `student_username` varchar(30) NOT NULL COMMENT 'Account username',
+                  `student_password` char(60) NOT NULL COMMENT 'Encrypted account password',
+                  `student_accountLevel` int(1) NOT NULL COMMENT 'Student account level (3)',
                   PRIMARY KEY (`student_ID`),
                   UNIQUE KEY `student_username` (`student_username`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=1056 DEFAULT CHARSET=latin1 COMMENT='Registered students';
+                ) ENGINE=InnoDB AUTO_INCREMENT=1079 DEFAULT CHARSET=latin1 COMMENT='Registered students';
             </pma:table>
             <pma:table name="tests">
                 CREATE TABLE `tests` (
@@ -84,8 +84,10 @@
                   `test_staffAuthor` int(11) NOT NULL COMMENT 'Author of the Test',
                   `test_name` text NOT NULL COMMENT 'Name of the test',
                   `test_type` tinytext NOT NULL COMMENT 'Type of test (Post-test, Pre-test)',
+                  `test_chapter` tinytext NOT NULL COMMENT 'Chapter of the current &amp;quot;Built-in&amp;quot; test.',
+                  `test_visibility` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Custom test visibility state',
                   PRIMARY KEY (`test_ID`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 COMMENT='Entry of pre-tests and post-tests';
+                ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 COMMENT='Entry of pre-tests and post-tests';
             </pma:table>
         </pma:database>
     </pma:structure_schemas>

@@ -22,7 +22,7 @@ if($test_type == "Built-in"){
     staffs.staff_lname
 
     FROM `tests` 
-    INNER JOIN `staffs` ON tests.test_staffAuthor = staffs.staff_ID
+    LEFT JOIN `staffs` ON tests.test_staffAuthor = staffs.staff_ID
 
     WHERE tests.test_type = '$test_type'
 
@@ -57,7 +57,7 @@ if($test_type == "Built-in"){
 // loop all test items
 while($r_test = mysqli_fetch_assoc($q_test)){
 
-    echo "TestID=".$r_test['test_ID']."|Author=".$r_test['staff_fname']." ".$r_test['staff_mname']." ".$r_test['staff_lname']."|Name=".$r_test['test_name']."|TestType=".$r_test['test_type'].":";
+    echo "TestID=".$r_test['test_ID']."|Author=".$r_test['staff_fname']." ".$r_test['staff_mname']." ".$r_test['staff_lname']."|Name=".$r_test['test_name']."|TestType=".$r_test['test_type']."|TestChapter=".$r_test['test_chapter'].":";
 
 }
 

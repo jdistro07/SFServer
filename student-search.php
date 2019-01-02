@@ -38,6 +38,7 @@ require 'php/auth-mods/auth-login.php';
                                 <tr>
                                     <th style = "vertical-align: middle; text-align: center">Student ID</th>
                                     <th style = "vertical-align: middle; text-align: center">Student Name</th>
+                                    <th style = "vertical-align: middle; text-align: center">Grade & Section</th>
                                     <th style = "vertical-align: middle; text-align: center">Menu</th>
                                 </tr>
                             </thead>

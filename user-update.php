@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 
 //initialize modules on start
 require 'php/auth-mods/auth-login.php';
@@ -153,10 +154,19 @@ if($requestType == "staffupdate"){
                 <br>
                 <form method = "post">
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>First Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" value = "<?php echo $q_fname; ?>" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Middle Name</strong> <i>(optional)</i></span></h6>
                     <input onkeyup = "textOnly(this)" value = "<?php echo $q_mname; ?>" name="mname" type="text" placeholder="Middle Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Last Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" value = "<?php echo $q_lname; ?>" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Address</strong></span></h6>
                     <input value = "<?php echo $q_address; ?>" required = "required" name="address" type="text" placeholder="Address"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Birth Date</strong></span></h6>
                     <input value = "<?php echo $q_birthdate; ?>" class="datePicker" required = "required" name="birthdate" type="date"/><br>
                     
                     <?php 
@@ -169,7 +179,10 @@ if($requestType == "staffupdate"){
                         2. organization
 
                         */
+                        echo '<h6 align = "left" id = "elementLabel"><span><strong>Position</strong></span></h6>';
                         echo '<input value = "'.$q_position.'" required = "required" name="position" type="text" placeholder="Position"/><br>';
+                        
+                        echo '<h6 align = "left" id = "elementLabel"><span><strong>Organization</strong></span></h6>';
                         echo '<input value = "'.$q_organization.'" required = "required" name="organization" type="text" placeholder="Organization"/><br>';
                     }else if ($requestType == "studentupdate"){
                         
@@ -177,6 +190,7 @@ if($requestType == "staffupdate"){
                         <datalist id="result-class">
                         </datalist>*/
                         
+                        echo '<h6 align = "left" id = "elementLabel"><span><strong>Current Class</strong></span></h6>';
                         echo '<select name = "classID" style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;">';
                             echo '<option value = "">-- Remove student from class --</option>';
                             
@@ -216,8 +230,13 @@ if($requestType == "staffupdate"){
                     }
                     ?>
 
+                    <h6 align = "left" id = "elementLabel"><span><strong>Username</strong> <i>(must be unique)</i></span></h6>
                     <input onkeyup = "usernameChars(this)" value = "<?php echo $q_username?>" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Change Password</strong></span></h6>
                     <input id = "password" name="password" type="password" placeholder="Change password"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Confirm Password</strong></span></h6>
                     <input id = "confpassword" name="confpassword" type="password" placeholder="Confirm password"/><br>
                     
                     <?php
@@ -227,6 +246,7 @@ if($requestType == "staffupdate"){
                     */
                     
                     if( $requestType == "staffupdate" && empty($_GET["accproperty"])){
+                        echo '<h6 align = "left" id = "elementLabel"><span><strong>Account Access Level</strong></span></h6>';
                        if($q_account_level == 1){
                             echo('
                                 <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
@@ -246,6 +266,8 @@ if($requestType == "staffupdate"){
                     }
 
                     ?>
+
+                    <hr>
                     
                     <input onclick = "return updateValidate('password', 'confpassword')" name="update" type="submit" value="Update"><br>
 
@@ -509,9 +531,10 @@ if(isset($_POST['update'])){
 
     }
 
-    if(!$_GET['redirect'] == "userprofile"){
+    if(!$_GET['redirect'] == "user-profile"){
         header($redirect_location);
     }else{
+        echo $_GET['redirect'];
         header('location: user-profile.php?id='.$id.'&user='.$username."&userType=".$user_type);
     }
 

@@ -20,22 +20,44 @@ require 'php/auth-mods/auth-login.php';
                 <h1>Staff Registration</h1>
                 <br>
                 <form method = "post">
+                    <h6 align = "left" id = "elementLabel"><span><strong>First Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" id = "fname" required = "required" name="fname" type="text" placeholder="First Name" autofocus/><br>    
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Middle Name</strong> <i>(optional)</i></span></h6>
                     <input onkeyup = "textOnly(this)" name="mname" type="text" placeholder="Middle Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Last Name</strong></span></h6>
                     <input onkeyup = "textOnly(this)" required = "required" name="lname" type="text" placeholder="Last Name"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Address</strong></span></h6>
                     <input required = "required" name="address" type="text" placeholder="Address"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Birth Date</strong></span></h6>
                     <input class="datePicker" required = "required" name="birthdate" type="date"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Position</strong></span></h6>
                     <input onkeyup = "textOnly(this)" required = "required" name="position" type="text" placeholder="Position"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Organization</strong></span></h6>
                     <input required = "required" name="organization" type="text" placeholder="Organization"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Username</strong> <i>(must be unique)</i></span></h6>
                     <input onkeyup = "usernameChars(this)" required = "required" name="username" type="text" placeholder="Username" value=""><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Password</strong></span></h6>
                     <input id = "password" required = "required" name="password" type="password" placeholder="Password"/><br>
+                    
+                    <h6 align = "left" id = "elementLabel"><span><strong>Confirm Password</strong></span></h6>
                     <input id = "confpassword" required = "required" name="confpassword" type="password" placeholder="Confirm Password"/><br>
                     
+
+                    <h6 align = "left" id = "elementLabel"><span><strong>Account Access Level</strong></span></h6>
                     <select style = "text-align-last: center; width: 80%; padding-top: 15px; padding-bottom: 15px;" name = "access_Level">
                         <option value="1">Administrator</option>
                         <option value="2">Teacher</option>
                     </select><br>
                     
+                    <hr>
                     <input onclick = "return regValidate('password', 'confpassword')" name="register" type="submit" value="Register"><br>
 
                 </form>

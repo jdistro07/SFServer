@@ -9,8 +9,8 @@ require ("../php/mod_conn.php");
 
 	$insert = mysqli_query($conn, 
 		
-		"INSERT INTO performance_data (pf_userID, pf_username, pf_testID, pf_testMode, pf_rating)
-		VALUES ($userID, '$username', $testID, '$testMode', $rating)
+		"INSERT INTO performance_data (pf_userID, pf_username, pf_testID, pf_testMode, pf_rating, pf_timestamp)
+		VALUES ($userID, '$username', $testID, '$testMode', $rating, NOW())
 
 		") or die ("Failed to upload values to database.");
 
