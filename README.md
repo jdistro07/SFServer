@@ -26,7 +26,7 @@ docker run -p [your port no.]:80 sfserver
 ```
 
 ### Configuring the server API to the game:
-1. Launch the game and open the settings windows found on the bottom left of the screen. 
+1. Launch the game and open the settings window found on the bottom left of the screen. 
 2. Paste `SF Server` home URL.
 ```
 // Example: If the SF Server is ran through Docker at port 41061
