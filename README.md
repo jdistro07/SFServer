@@ -16,7 +16,7 @@ Server for the project entitled [Script Forte](https://github.com/skildfrix/SFSe
 ### Docker:
 1. Build the Docker image
 ```
-2. docker build -t sfserver .
+docker build -t sfserver .
 ```
 
 3. Run the container to bounded to the available port of your PC
